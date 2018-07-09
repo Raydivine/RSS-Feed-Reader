@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace RssFeedReader.Tests
 {
     [TestClass()]
@@ -14,7 +15,11 @@ namespace RssFeedReader.Tests
         [TestMethod()]
         public void getNewsFromRssURLTest()
         {
-            Assert.Fail();
+            string url = "https://www.thestar.com.my/rss/";
+
+            List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
+            Assert.AreNotEqual(0, newsList.Count());
+
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ServiceModel;
+using System.ServiceModel.Syndication;
+using System.Xml;
 
 namespace RssFeedReader
 {
@@ -11,15 +9,40 @@ namespace RssFeedReader
     {
         string title;
         string story;
+
+        public News(string t, string s)
+        {
+            title = t;
+            story = s;
+        }
+
+
     }
 
-    public class RssFeedReader
+    public static class RssFeedReader
     {
-        public RssFeedReader() { }
-
-        public List<News> getNewsFromRssURL(string rssUrl)
+        public static List<News> getNewsFromRssURL(string rssUrl)
         {
+            string err = string.Empty;
             List<News> newsList = new List<News>();
+
+            try
+            {
+                using (XmlReader xmlReader = XmlReader.Create(rssUrl))
+                {
+                    SyndicationFeed syncFeed = SyndicationFeed.Load(xmlReader);
+
+                    foreach (SyndicationItem syncItem in syncFeed.Items)
+                    {
+                        newsList.Add(new News(syncItem.Title.Text, syncItem.Summary.Text));
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                err += "Error failed to retrieve news from RSS URL of '";
+                err += rssUrl + "' , detail : " + exc.Message;
+            }
 
             return newsList;
         }
