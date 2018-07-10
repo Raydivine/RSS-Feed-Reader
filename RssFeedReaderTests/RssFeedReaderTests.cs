@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RssFeedReader;
+using Library.RssFeedReader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RssFeedReader.Tests
+namespace Library.RssFeedReader.Tests
 {
     [TestClass()]
     public class RssFeedReaderTests
@@ -14,11 +14,11 @@ namespace RssFeedReader.Tests
         [TestMethod()]
         public void getNewsFromRssURLTest()
         {
-            string url = "https://www.thestar.com.my/rss/";
+            // CNN world RSS feed URL
+            string url = "http://rss.cnn.com/rss/edition_world.rss";
 
-            List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
+            List<News> newsList = Library.RssFeedReader.RssFeedReader.getNewsFromRssURL(url);
             Assert.AreNotEqual(0, newsList.Count());
-
         }
     }
 }

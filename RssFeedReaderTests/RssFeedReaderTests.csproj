@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RssFeedReader\RssFeedReader.csproj">
-      <Project>{408C0882-E868-455D-A225-1694A84FA0CF}</Project>
+      <Project>{408c0882-e868-455d-a225-1694a84fa0cf}</Project>
       <Name>RssFeedReader</Name>
     </ProjectReference>
   </ItemGroup>

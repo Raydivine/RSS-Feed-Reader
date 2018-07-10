@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.ServiceModel.Syndication;
 using System.Xml;
 
-namespace RssFeedReader
+namespace Library.RssFeedReader
 {
     public struct News
     {
+        string link;
         string title;
         string story;
 
-        public News(string t, string s)
+        public News(string link, string title, string story)
         {
-            title = t;
-            story = s;
+            this.link = link;
+            this.title = title;
+            this.story = story;
         }
-
-
     }
 
     public static class RssFeedReader
@@ -34,7 +34,11 @@ namespace RssFeedReader
 
                     foreach (SyndicationItem syncItem in syncFeed.Items)
                     {
-                        newsList.Add(new News(syncItem.Title.Text, syncItem.Summary.Text));
+                        string url = syncFeed.Links.ToString();
+                        string title = syncItem.Title.Text;
+                        string story = syncItem.Summary.Text;
+
+                        newsList.Add(new News(url, title, story));
                     }
                 }
             }
