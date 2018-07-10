@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssFeedReader", "RssFeedReader\RssFeedReader.csproj", "{408C0882-E868-455D-A225-1694A84FA0CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRssFeedReader", "TestRssFeedReader\TestRssFeedReader.csproj", "{9ABD1EA1-21BB-447A-ABB3-CDDC53ABB41B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssFeedReaderTests", "RssFeedReaderTests\RssFeedReaderTests.csproj", "{8BD06076-ED87-455E-B296-A51806F744FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{408C0882-E868-455D-A225-1694A84FA0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{408C0882-E868-455D-A225-1694A84FA0CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{408C0882-E868-455D-A225-1694A84FA0CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9ABD1EA1-21BB-447A-ABB3-CDDC53ABB41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9ABD1EA1-21BB-447A-ABB3-CDDC53ABB41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9ABD1EA1-21BB-447A-ABB3-CDDC53ABB41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9ABD1EA1-21BB-447A-ABB3-CDDC53ABB41B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD06076-ED87-455E-B296-A51806F744FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD06076-ED87-455E-B296-A51806F744FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD06076-ED87-455E-B296-A51806F744FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD06076-ED87-455E-B296-A51806F744FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

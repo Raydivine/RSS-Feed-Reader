@@ -6,11 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace RssFeedReader.Tests
 {
     [TestClass()]
-    public class testGetNewsFromRssURL
+    public class RssFeedReaderTests
     {
         [TestMethod()]
         public void getNewsFromRssURLTest()
