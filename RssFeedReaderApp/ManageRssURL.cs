@@ -14,6 +14,7 @@ namespace RssFeedReaderApp
     public partial class ManageRssURL : Form
     {
         string errMss = string.Empty;
+        string itemToRemove = string.Empty;
 
        // String connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Source\Repos\RSS-Feed-Reader\RssFeedReader\rssFeedReader.mdf;Integrated Security = True";
 
@@ -34,6 +35,7 @@ namespace RssFeedReaderApp
         private void btn_addUrl_Click(object sender, EventArgs e)
         {
             lb_RssUrlStore.Items.Add(txt_RssURL.Text);
+            txt_RssURL.Clear();
         }
 
         private void btn_updateRssURL_Click(object sender, EventArgs e)
@@ -100,8 +102,10 @@ namespace RssFeedReaderApp
             return urls;
         }
 
-        private void ManageRssURL_Load(object sender, EventArgs e)
+        private void btn_Remove_Click(object sender, EventArgs e)
         {
+            lb_RssUrlStore.Items.Remove(lb_RssUrlStore.SelectedItem);
+            txt_RssURL.Clear();
         }
     }
 }
