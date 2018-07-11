@@ -32,6 +32,7 @@
             this.txt_RssURL = new System.Windows.Forms.TextBox();
             this.lb_RssUrlStore = new System.Windows.Forms.ListBox();
             this.btn_addUrl = new System.Windows.Forms.Button();
+            this.btn_updateRssURL = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -53,7 +54,7 @@
             // lb_RssUrlStore
             // 
             this.lb_RssUrlStore.FormattingEnabled = true;
-            this.lb_RssUrlStore.Location = new System.Drawing.Point(26, 74);
+            this.lb_RssUrlStore.Location = new System.Drawing.Point(12, 46);
             this.lb_RssUrlStore.Name = "lb_RssUrlStore";
             this.lb_RssUrlStore.Size = new System.Drawing.Size(435, 199);
             this.lb_RssUrlStore.TabIndex = 2;
@@ -68,17 +69,29 @@
             this.btn_addUrl.UseVisualStyleBackColor = true;
             this.btn_addUrl.Click += new System.EventHandler(this.btn_addUrl_Click);
             // 
+            // btn_updateRssURL
+            // 
+            this.btn_updateRssURL.Location = new System.Drawing.Point(171, 251);
+            this.btn_updateRssURL.Name = "btn_updateRssURL";
+            this.btn_updateRssURL.Size = new System.Drawing.Size(118, 23);
+            this.btn_updateRssURL.TabIndex = 4;
+            this.btn_updateRssURL.Text = "Update Rss URL";
+            this.btn_updateRssURL.UseVisualStyleBackColor = true;
+            this.btn_updateRssURL.Click += new System.EventHandler(this.btn_updateRssURL_Click);
+            // 
             // ManageRssURL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 299);
+            this.Controls.Add(this.btn_updateRssURL);
             this.Controls.Add(this.btn_addUrl);
             this.Controls.Add(this.lb_RssUrlStore);
             this.Controls.Add(this.txt_RssURL);
             this.Controls.Add(this.label1);
             this.Name = "ManageRssURL";
             this.Text = "ManageRssURL";
+            this.Load += new System.EventHandler(this.ManageRssURL_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -90,5 +103,6 @@
         private System.Windows.Forms.TextBox txt_RssURL;
         private System.Windows.Forms.ListBox lb_RssUrlStore;
         private System.Windows.Forms.Button btn_addUrl;
+        private System.Windows.Forms.Button btn_updateRssURL;
     }
 }
