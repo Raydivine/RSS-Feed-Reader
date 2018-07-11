@@ -23,18 +23,6 @@ namespace RssFeedReaderApp
                     + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
                     + ";Integrated Security=True";
 
-        /*
-        String connectionString = AppDomain.CurrentDomain.BaseDirectory + "\rssFeedReader.mdf";
-
-        String connect = "Data Source=" + System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase) + "\\rssFeedReader.mdf";
-        */
-
-        /*
-        
-            Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Source\Repos\RSS-Feed-Reader\RssFeedReader\rssFeedReader.mdf;Integrated Security=True
-      
-        */
-
         public ManageRssURL()
         {
             InitializeComponent();
