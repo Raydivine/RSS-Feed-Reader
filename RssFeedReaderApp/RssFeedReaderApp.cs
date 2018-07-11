@@ -24,5 +24,10 @@ namespace RssFeedReaderApp
             lb_newsReader.DataSource = newsList;
 
         }
+
+        private void tsB_manageRssURL_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -16,7 +16,8 @@ namespace RssFeedReaderApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RssFeedReaderApp());
+            //Application.Run(new RssFeedReaderApp());
+            Application.Run(new ManageRssURL());
         }
     }
 }
