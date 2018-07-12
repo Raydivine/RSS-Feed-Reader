@@ -110,6 +110,9 @@ namespace Library.RssFeedReader
 
         public static void manageUrlInDataBase(List<string> addList, List<string> removeList)
         {
+            if (addList.Count + removeList.Count == 0)
+                return;
+
             string query = constructQuery(addList, removeList);
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -155,7 +158,6 @@ namespace Library.RssFeedReader
                 foreach (string url in removeList)
                 {
                     remvQuey += "'" + url + "',";
-
                 }
                 remvQuey = remvQuey.Substring(0, remvQuey.Length - 1);
                 remvQuey += ") ;";
