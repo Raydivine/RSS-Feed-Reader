@@ -19,10 +19,9 @@ namespace RssFeedReaderApp
        // String connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Source\Repos\RSS-Feed-Reader\RssFeedReader\rssFeedReader.mdf;Integrated Security = True";
 
         
-        string connectionString
-        = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
-          + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
-          + ";Integrated Security=True";
+        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
+                                    + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
+                                    + ";Integrated Security=True";
 
         public ManageRssURL()
         {
@@ -43,12 +42,9 @@ namespace RssFeedReaderApp
             List<string> urls = lb_RssUrlStore.Items.Cast<string>().ToList();
             string query = "TRUNCATE TABLE tRssURL; ";
 
-            if (urls.Count == 0)
-                return;
-
             foreach(string url in urls)
             {
-                query += "INSERT INTO tRssURL (url) VALUES ('" + url + "') ";
+                query += "INSERT INTO tRssURL (url) VALUES ('" + url + "') ;";
             }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
