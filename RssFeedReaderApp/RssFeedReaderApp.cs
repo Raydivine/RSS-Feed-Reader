@@ -13,10 +13,12 @@ namespace RssFeedReaderApp
 {
     public partial class RssFeedReaderApp : Form
     {
+        System.Threading.Thread t;
+
         public RssFeedReaderApp()
         {
-            
-            string url = "http://rss.cnn.com/rss/edition_world.rss";
+            string url = "http://feeds.bbci.co.uk/news/world/rss.xml";
+            //string url = "http://rss.cnn.com/rss/edition_world.rss";
 
             InitializeComponent();
             
@@ -51,5 +53,21 @@ namespace RssFeedReaderApp
                 }
             }
         }
+
+        private void RssFeedReaderApp_Load(object sender, EventArgs e)
+        {
+            /*
+            t = new System.Threading.Thread(runFeedReader);
+            t.Start();*/
+        }
+
+        private void runFeedReader()
+        {
+            //List<string> urls = RssFeedReader.getAllStoredUrl();
+        }
+
+     
+
+       
     }
 }

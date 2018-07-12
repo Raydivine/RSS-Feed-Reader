@@ -40,7 +40,6 @@
             this.colDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColHeadLines = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColLink = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.ColRemove = new System.Windows.Forms.DataGridViewButtonColumn();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.girdView_News)).BeginInit();
             this.SuspendLayout();
@@ -53,7 +52,7 @@
             this.tsB_manageRssURL});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(841, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(848, 27);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -83,8 +82,7 @@
             this.girdView_News.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colDateTime,
             this.ColHeadLines,
-            this.ColLink,
-            this.ColRemove});
+            this.ColLink});
             this.girdView_News.Dock = System.Windows.Forms.DockStyle.Fill;
             this.girdView_News.Location = new System.Drawing.Point(0, 27);
             this.girdView_News.Name = "girdView_News";
@@ -97,7 +95,7 @@
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.girdView_News.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.girdView_News.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.girdView_News.Size = new System.Drawing.Size(841, 409);
+            this.girdView_News.Size = new System.Drawing.Size(848, 409);
             this.girdView_News.TabIndex = 2;
             this.girdView_News.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.girdView_News_CellContentClick);
             // 
@@ -116,7 +114,7 @@
             this.ColHeadLines.HeaderText = "HeadLines";
             this.ColHeadLines.Name = "ColHeadLines";
             this.ColHeadLines.ReadOnly = true;
-            this.ColHeadLines.Width = 300;
+            this.ColHeadLines.Width = 500;
             // 
             // ColLink
             // 
@@ -128,23 +126,16 @@
             this.ColLink.Text = "";
             this.ColLink.Width = 200;
             // 
-            // ColRemove
-            // 
-            this.ColRemove.HeaderText = "Remove";
-            this.ColRemove.Name = "ColRemove";
-            this.ColRemove.ReadOnly = true;
-            this.ColRemove.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColRemove.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
             // RssFeedReaderApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(841, 436);
+            this.ClientSize = new System.Drawing.Size(848, 436);
             this.Controls.Add(this.girdView_News);
             this.Controls.Add(this.toolStrip1);
             this.Name = "RssFeedReaderApp";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.RssFeedReaderApp_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.girdView_News)).EndInit();
@@ -160,7 +151,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColHeadLines;
         private System.Windows.Forms.DataGridViewLinkColumn ColLink;
-        private System.Windows.Forms.DataGridViewButtonColumn ColRemove;
     }
 }
 
