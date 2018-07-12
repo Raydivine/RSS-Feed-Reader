@@ -26,6 +26,8 @@ namespace RssFeedReaderApp
         public ManageRssURL()
         {
             InitializeComponent();
+            
+         
 
             List<string> urlsStore = getAllStoredUrl();
             urlsStore.ForEach(url => lb_RssUrlStore.Items.Add(url));
@@ -35,36 +37,6 @@ namespace RssFeedReaderApp
         {
             lb_RssUrlStore.Items.Add(txt_RssURL.Text);
             txt_RssURL.Clear();
-        }
-
-        private void btn_updateRssURL_Click(object sender, EventArgs e)
-        {
-            List<string> urls = lb_RssUrlStore.Items.Cast<string>().ToList();
-            string query = "TRUNCATE TABLE tRssURL; ";
-
-            foreach(string url in urls)
-            {
-                query += "INSERT INTO tRssURL (url) VALUES ('" + url + "') ;";
-            }
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    connection.Close();
-                }
-                catch (Exception exc)
-                {
-                    errMss += "Cannot connect to database , error : " + exc.Message;
-                    MessageBox.Show(errMss);
-                }
-            }
         }
 
         private List<string> getAllStoredUrl()
@@ -102,6 +74,39 @@ namespace RssFeedReaderApp
         {
             lb_RssUrlStore.Items.Remove(lb_RssUrlStore.SelectedItem);
             txt_RssURL.Clear();
+        }
+
+        private void form_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                List<string> urls = lb_RssUrlStore.Items.Cast<string>().ToList();
+                string query = "TRUNCATE TABLE tRssURL; ";
+
+                foreach (string url in urls)
+                {
+                    query += "INSERT INTO tRssURL (url) VALUES ('" + url + "') ;";
+                }
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                        connection.Close();
+                    }
+                    catch (Exception exc)
+                    {
+                        errMss += "Cannot connect to database , error : " + exc.Message;
+                        MessageBox.Show(errMss);
+                    }
+                }
+            }
         }
     }
 }

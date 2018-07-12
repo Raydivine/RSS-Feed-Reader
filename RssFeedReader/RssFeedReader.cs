@@ -91,7 +91,15 @@ namespace Library.RssFeedReader
                         string title = syncItem.Title.Text;
                         string story = syncItem.Summary.Text;
                 
+
                         newsList.Add(new News(date, url, title, story));
+
+                        if(url == string.Empty || url is null)
+                        {
+
+                        }
+
+
                     }
                 }
             }

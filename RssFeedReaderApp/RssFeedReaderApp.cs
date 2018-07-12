@@ -15,19 +15,18 @@ namespace RssFeedReaderApp
     {
         public RssFeedReaderApp()
         {
+            
             string url = "http://rss.cnn.com/rss/edition_world.rss";
 
             InitializeComponent();
-
+            /*
             List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
 
             foreach(News news in newsList)
             {
                 girdView_News.Rows.Add(news.DateTimeOff, news.Title, news.Link, news.Story);
             }
-
-            //string news = "https://www.thestar.com.my/news/nation/2018/07/12/it-takes-more-than-money-to-buy-gr-jewellery/";
-            //girdView_News.Rows.Add("2018-07-06 11.30pm", news, "Rosman",  "dfsddsfsdfsdfsdfsdfdsfsd");
+            */
         }
 
         private void tsB_manageRssURL_Click(object sender, EventArgs e)
