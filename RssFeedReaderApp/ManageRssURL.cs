@@ -27,8 +27,6 @@ namespace RssFeedReaderApp
         {
             InitializeComponent();
             
-         
-
             List<string> urlsStore = getAllStoredUrl();
             urlsStore.ForEach(url => lb_RssUrlStore.Items.Add(url));
         }

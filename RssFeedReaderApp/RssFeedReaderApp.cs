@@ -19,14 +19,14 @@ namespace RssFeedReaderApp
             string url = "http://rss.cnn.com/rss/edition_world.rss";
 
             InitializeComponent();
-            /*
+            
             List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
 
             foreach(News news in newsList)
             {
-                girdView_News.Rows.Add(news.DateTimeOff, news.Title, news.Link, news.Story);
+                girdView_News.Rows.Add(news.DateTimeOff, news.Title, news.Link);
             }
-            */
+            
         }
 
         private void tsB_manageRssURL_Click(object sender, EventArgs e)
@@ -37,7 +37,7 @@ namespace RssFeedReaderApp
 
         private void girdView_News_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 1 && e.RowIndex != -1) //If user is clicked the URL cell 
+            if (e.ColumnIndex == 2 && e.RowIndex != -1) //If user is clicked the URL cell 
             {
                 try
                 {
