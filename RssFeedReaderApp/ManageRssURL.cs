@@ -31,9 +31,18 @@ namespace RssFeedReaderApp
         public ManageRssURL()
         {
             InitializeComponent();
-
+  
             List<string> urlsStore = RssFeedReader.getAllStoredUrl();
             urlsStore.ForEach(url => lb_RssUrlStore.Items.Add(url));
+
+            ToolTip toolTip1 = new ToolTip();
+
+            toolTip1.AutoPopDelay = 2000;
+            toolTip1.InitialDelay = 500;
+            toolTip1.ReshowDelay = 200;
+            toolTip1.ShowAlways = true;
+
+            toolTip1.SetToolTip(this.btn_addUrl, "Add a valid http link");
         }
 
         private void btn_addUrl_Click(object sender, EventArgs e)
@@ -50,17 +59,19 @@ namespace RssFeedReaderApp
 
         private void btn_Remove_Click(object sender, EventArgs e)
         {
-            removeList.Add(lb_RssUrlStore.SelectedItem.ToString());
-            lb_RssUrlStore.Items.Remove(lb_RssUrlStore.SelectedItem);      
-            txt_RssURL.Clear();
+            if (lb_RssUrlStore.SelectedItem != null)
+            {
+                removeList.Add(lb_RssUrlStore.SelectedItem.ToString());
+                lb_RssUrlStore.Items.Remove(lb_RssUrlStore.SelectedItem);
+                txt_RssURL.Clear();
+            }
         }
 
         private void form_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                List<string> urls = lb_RssUrlStore.Items.Cast<string>().ToList();
-                RssFeedReader.manageUrlInDataBase(addList, removeList);
+                RssFeedReader.manageUrlInDb(addList, removeList);
             }
         }
     }

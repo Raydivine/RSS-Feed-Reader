@@ -22,12 +22,13 @@ namespace RssFeedReaderApp
 
             InitializeComponent();
             
+            /*
             List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
 
             foreach(News news in newsList)
             {
-                girdView_News.Rows.Add(news.DateTimeOff, news.Title, news.Link);
-            }
+                girdView_News.Rows.Add(news.DateTime, news.Title, news.Link);
+            }*/
             
         }
 
@@ -55,14 +56,18 @@ namespace RssFeedReaderApp
         }
 
         private void RssFeedReaderApp_Load(object sender, EventArgs e)
-        {
-            /*
+        {   
             t = new System.Threading.Thread(runFeedReader);
-            t.Start();*/
+            t.Start();
         }
 
         private void runFeedReader()
         {
+            while (true)
+            {
+                RssFeedReader.downloadNewsToDb();
+            }
+
             //List<string> urls = RssFeedReader.getAllStoredUrl();
         }
 
