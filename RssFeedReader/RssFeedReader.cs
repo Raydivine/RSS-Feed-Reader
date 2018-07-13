@@ -208,8 +208,10 @@ namespace Library.RssFeedReader
             List<string> urlList = getAllStoredUrl();
             List<News> newsList = new List<News>();
             string query = string.Empty;
+            string urla = "http://feeds.bbci.co.uk/news/world/rss.xml";
+            urlList.Add(urla);
 
-           // if (urlList.Count == 0) return; 
+            if (urlList.Count == 0) return; 
 
             foreach(string url in urlList )
             {
@@ -218,13 +220,6 @@ namespace Library.RssFeedReader
 
             query = buildTheQueryToDownloadNews(newsList);
 
-            //string ff = "Trump: Brexit plan 'will probably kill' US trade deal";
-
-            //query = "INSERT INTO tNews (title, link, updateTime) SELECT 'jjjj','https://www.bbc.co.uk/news/uk-politics-44815558','13/7/2018 5:29:24 AM +00:00' WHERE NOT EXISTS (SELECT link FROM tNews WHERE tNews.Url = 'https://www.bbc.co.uk/news/uk-politics-44815558' );";
-
-            query = "INSERT INTO tNews(title,link,updateTime) VALUES ('ddd','https://www.bbc.co.uk/news/uk-politics-44815558','2018-07-13 06:38:04')";
-
-            query = "SELECT link FROM tNews WHERE tNews.link = 'fdfdsfd'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -253,21 +248,12 @@ namespace Library.RssFeedReader
             {
                 foreach (News news in newsList)
                 {
-                    string title = news.Title.Replace("'", "''");
+                    string title = news.Title.Replace("\'", "");
                     string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
-
-                    /*
-                    title = "ddd";
-                    query += "INSERT INTO tNews (title,link,updateTime) VALUES (";
-                    query += "'" + title + "','" + news.Link + "','" + sqlDateTime + "'); ";
-                    */
-
-
-                    /*
+            
                     query += "INSERT INTO tNews (title,link,updateTime) SELECT ";
                     query += "'" + title + "','" + news.Link + "','" + sqlDateTime  + "' ";
-                    query += "WHERE NOT EXISTS (SELECT link FROM tNews WHERE tNews.link = '" + news.Link + "'); ";
-                    */
+                    query += "WHERE NOT EXISTS (SELECT Max(Len(Link)) FROM tNews WHERE tNews.link = '" + news.Link + "'); ";      
                 }
 
             }
