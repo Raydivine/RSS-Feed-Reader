@@ -56,19 +56,41 @@ namespace RssFeedReaderApp
         }
 
         private void RssFeedReaderApp_Load(object sender, EventArgs e)
-        {   
+        {
+   
             t = new System.Threading.Thread(runFeedReader);
             t.Start();
+            
         }
 
         private void runFeedReader()
         {
+            string url = "http://feeds.bbci.co.uk/news/world/rss.xml";
+
             while (true)
             {
-                RssFeedReader.downloadNewsToDb();
+                List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
+
+                try
+                {
+
+                    foreach (News news in newsList)
+                    {
+                        foreach (DataGridViewRow row in girdView_News.Rows)
+                        {
+                            if (row.Cells[2].Value != null && row.Cells[2].Value.ToString() != news.Link)
+                                girdView_News.Rows.Add(news.DateTime, news.Title, news.Link);
+                        }
+                        
+                    }
+                }
+                catch(Exception exc)
+                {
+                    string eroor = exc.Message;
+                }
+                
             }
 
-            //List<string> urls = RssFeedReader.getAllStoredUrl();
         }
 
      

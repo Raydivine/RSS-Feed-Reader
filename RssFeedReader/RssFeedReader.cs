@@ -218,19 +218,15 @@ namespace Library.RssFeedReader
                 newsList.AddRange(getNewsFromRssURL(url));
             }
 
-            query = buildTheQueryToDownloadNews(newsList);
-
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
+                    foreach (News news in newsList)
+                        insertTheNewsIfIsNotInDb(connection, news);
+
                     connection.Close();
                 }
                 catch (Exception exc)
@@ -239,6 +235,41 @@ namespace Library.RssFeedReader
                 }
             }
         }
+
+        private static void insertTheNewsIfIsNotInDb(SqlConnection connection, News news)
+        {
+            string query = "SELECT link FROM tNews WHERE tNews.Link ='" + news.Link + "'";
+
+            try
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (!reader.HasRows)
+                    {
+                        string title = news.Title.Replace("\'", "");
+                        string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+                        title = "hhh";
+                        news.Link = "www";
+
+                        query = "INSERT INTO tNews (title,link,updateTime) VALUES ('" + title + "','" + news.Link + "','" + sqlDateTime + "'); ";
+
+
+                        reader.Close();
+                        cmd.CommandText = query;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                string errMss = "Cannot connect to database , error : " + exc.Message;
+            }
+        }
+
 
         private static string buildTheQueryToDownloadNews(List<News> newsList)
         {
