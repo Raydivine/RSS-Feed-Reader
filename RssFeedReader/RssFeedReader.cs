@@ -252,12 +252,10 @@ namespace Library.RssFeedReader
                         string title = news.Title.Replace("\'", "");
                         string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-                        title = "hhh";
-                        news.Link = "www";
 
                         query = "INSERT INTO tNews (title,link,updateTime) VALUES ('" + title + "','" + news.Link + "','" + sqlDateTime + "'); ";
 
-
+                        //query = "INSERT INTO tNews (title,link,updateTime) VALUES ('trump',' link ','" + sqlDateTime + "'); ";
                         reader.Close();
                         cmd.CommandText = query;
                         cmd.ExecuteNonQuery();
@@ -268,6 +266,42 @@ namespace Library.RssFeedReader
             {
                 string errMss = "Cannot connect to database , error : " + exc.Message;
             }
+        }
+
+        public static List<News> getNewsFromDb()
+        {
+            List<News> newsList = new List<News>();
+
+            string query = "SELECT title,link,updateTime FROM tNews";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            string title = reader["title"].ToString();
+                            string link = reader["link"].ToString();
+                            DateTime dateTime =   DateTime.Parse( (reader["updateTime"].ToString() ) );
+
+                            newsList.Add(new News(dateTime, link, title, ""));
+                        }
+                    }
+                    connection.Close();
+                }
+                catch (Exception exc)
+                {
+                    string errMss = "Cannot connect to database , error : " + exc.Message;
+                }
+            }
+
+            return newsList;
         }
 
 
