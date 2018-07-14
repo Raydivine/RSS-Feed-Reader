@@ -98,9 +98,9 @@ namespace Library.RssFeedReader
 
                         if (url == string.Empty || title == string.Empty)
                             continue;
-                        
+
                         newsList.Add(new News(date, url, title, story));
-                        
+
                     }
                 }
             }
@@ -211,9 +211,9 @@ namespace Library.RssFeedReader
             string urla = "http://feeds.bbci.co.uk/news/world/rss.xml";
             urlList.Add(urla);
 
-            if (urlList.Count == 0) return; 
+            if (urlList.Count == 0) return;
 
-            foreach(string url in urlList )
+            foreach (string url in urlList)
             {
                 newsList.AddRange(getNewsFromRssURL(url));
             }
@@ -288,7 +288,7 @@ namespace Library.RssFeedReader
                         {
                             string title = reader["title"].ToString();
                             string link = reader["link"].ToString();
-                            DateTime dateTime =   DateTime.Parse( (reader["updateTime"].ToString() ) );
+                            DateTime dateTime = DateTime.Parse((reader["updateTime"].ToString()));
 
                             newsList.Add(new News(dateTime, link, title, ""));
                         }
@@ -315,15 +315,43 @@ namespace Library.RssFeedReader
                 {
                     string title = news.Title.Replace("\'", "");
                     string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
-            
+
                     query += "INSERT INTO tNews (title,link,updateTime) SELECT ";
-                    query += "'" + title + "','" + news.Link + "','" + sqlDateTime  + "' ";
-                    query += "WHERE NOT EXISTS (SELECT Max(Len(Link)) FROM tNews WHERE tNews.link = '" + news.Link + "'); ";      
+                    query += "'" + title + "','" + news.Link + "','" + sqlDateTime + "' ";
+                    query += "WHERE NOT EXISTS (SELECT Max(Len(Link)) FROM tNews WHERE tNews.link = '" + news.Link + "'); ";
                 }
 
             }
             return query;
         }
+
+        public static void testInsert()
+        {
+
+            string query = "INSERT INTO tNews (title,link,updateTime) VALUES ('White House: Trump-Putin summit is on after hacking indictment','https://www.bbc.co.uk/news/world-us-canada-44830065','2018-07-14 02:27:55');";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                catch (Exception exc)
+                {
+                    string errMss = "Cannot connect to database , error : " + exc.Message;
+                }
+            }
+
+        }
+            
+
+
 
         #endregion 
 

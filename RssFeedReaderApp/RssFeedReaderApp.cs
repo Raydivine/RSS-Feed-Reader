@@ -57,7 +57,8 @@ namespace RssFeedReaderApp
 
         private void RssFeedReaderApp_Load(object sender, EventArgs e)
         {
-   
+            //RssFeedReader.testInsert();
+
             t = new System.Threading.Thread(runFeedReader);
             t.Start();
             
@@ -67,10 +68,23 @@ namespace RssFeedReaderApp
         {
             string url = "http://feeds.bbci.co.uk/news/world/rss.xml";
 
-        
-            RssFeedReader.downloadNewsToDb();
+            try
+            {
+                RssFeedReader.downloadNewsToDb();
+
+                List<News> newsList = RssFeedReader.getNewsFromDb();
+
+                foreach (News news in newsList)
+                {
+                    girdView_News.Rows.Add(news.DateTime, news.Title, news.Link);
+                }
+
                 
-            
+            }
+            catch(Exception exc)
+            {
+                string mss = "Cannot display news, error : " + exc.Message;
+            }
 
         }
 
