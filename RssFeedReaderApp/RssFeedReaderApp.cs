@@ -8,11 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Library.RssFeedReader;
+using System.Data.SqlClient;
 
 namespace RssFeedReaderApp
 {
     public partial class RssFeedReaderApp : Form
     {
+        string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
+                                   + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
+                                   + ";Integrated Security=True";
+        string _cmd = "SELECT title,link,updateTime FROM tNews";
+
+        SqlConnection _connection;
+        SqlDataAdapter _da;
+        DataTable _table = new DataTable();
+
         System.Threading.Thread t;
 
         public RssFeedReaderApp()
@@ -21,7 +31,7 @@ namespace RssFeedReaderApp
             //string url = "http://rss.cnn.com/rss/edition_world.rss";
 
             InitializeComponent();
-            
+            _connection = new SqlConnection(_connectionString);
             /*
             List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
 
@@ -29,7 +39,7 @@ namespace RssFeedReaderApp
             {
                 girdView_News.Rows.Add(news.DateTime, news.Title, news.Link);
             }*/
-            
+
         }
 
         private void tsB_manageRssURL_Click(object sender, EventArgs e)
@@ -44,7 +54,7 @@ namespace RssFeedReaderApp
             {
                 try
                 {
-                    string url = girdView_News.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    string url = gv_News.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                     System.Diagnostics.Process.Start(url);
                 }
                 catch (Exception exc)
@@ -61,7 +71,13 @@ namespace RssFeedReaderApp
 
             t = new System.Threading.Thread(runFeedReader);
             t.Start();
-            
+
+            /*
+            RssFeedReader.downloadNewsToDb();
+
+            dataGridViewBinding();
+
+            */
         }
 
         private void runFeedReader()
@@ -74,12 +90,8 @@ namespace RssFeedReaderApp
 
                 List<News> newsList = RssFeedReader.getNewsFromDb();
 
-                foreach (News news in newsList)
-                {
-                    girdView_News.Rows.Add(news.DateTime, news.Title, news.Link);
-                }
+                //dataGridViewBinding();
 
-                
             }
             catch(Exception exc)
             {
@@ -88,7 +100,22 @@ namespace RssFeedReaderApp
 
         }
 
-     
+        private void dataGridViewBinding()
+        {
+            try
+            {
+                _da = new SqlDataAdapter(_cmd, _connection);
+                _da.Fill(_table);
+                dataGridView1.DataSource = _table;
+                //gv_News.DataSource = _table;
+            }
+            catch (Exception exc)
+            {
+                string mss = "Cannot display news, error : " + exc.Message;
+            }
+
+
+        }
 
        
     }

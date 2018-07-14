@@ -238,6 +238,29 @@ namespace Library.RssFeedReader
 
         private static void insertTheNewsIfIsNotInDb(SqlConnection connection, News news)
         {
+            string title = news.Title.Replace("\'", "");
+            string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string query = "INSERT INTO tNews (title,link,updateTime) SELECT ";
+            query += "'" + title + "','" + news.Link + "','" + sqlDateTime + "' ";
+            query += "WHERE NOT EXISTS (SELECT Link FROM tNews WHERE tNews.link = '" + news.Link + "'); ";
+
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception exc)
+            {
+                string errMss = "Cannot connect to database , error : " + exc.Message;
+            }
+        }
+
+        /*
+        private static void insertTheNewsIfIsNotInDb(SqlConnection connection, News news)
+        {
             string query = "SELECT link FROM tNews WHERE tNews.Link ='" + news.Link + "'";
 
             try
@@ -267,6 +290,7 @@ namespace Library.RssFeedReader
                 string errMss = "Cannot connect to database , error : " + exc.Message;
             }
         }
+        */
 
         public static List<News> getNewsFromDb()
         {
@@ -304,7 +328,6 @@ namespace Library.RssFeedReader
             return newsList;
         }
 
-
         private static string buildTheQueryToDownloadNews(List<News> newsList)
         {
             string query = string.Empty;
@@ -327,7 +350,6 @@ namespace Library.RssFeedReader
 
         public static void testInsert()
         {
-
             string query = "INSERT INTO tNews (title,link,updateTime) VALUES ('White House: Trump-Putin summit is on after hacking indictment','https://www.bbc.co.uk/news/world-us-canada-44830065','2018-07-14 02:27:55');";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
