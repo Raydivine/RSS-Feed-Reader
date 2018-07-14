@@ -374,9 +374,6 @@ namespace Library.RssFeedReader
 
         }
             
-
-
-
         #endregion 
 
     }

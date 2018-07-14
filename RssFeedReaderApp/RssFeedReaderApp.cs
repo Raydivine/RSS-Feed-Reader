@@ -27,19 +27,8 @@ namespace RssFeedReaderApp
 
         public RssFeedReaderApp()
         {
-            string url = "http://feeds.bbci.co.uk/news/world/rss.xml";
-            //string url = "http://rss.cnn.com/rss/edition_world.rss";
-
             InitializeComponent();
             _connection = new SqlConnection(_connectionString);
-            /*
-            List<News> newsList = RssFeedReader.getNewsFromRssURL(url);
-
-            foreach(News news in newsList)
-            {
-                girdView_News.Rows.Add(news.DateTime, news.Title, news.Link);
-            }*/
-
         }
 
         private void tsB_manageRssURL_Click(object sender, EventArgs e)
@@ -50,7 +39,7 @@ namespace RssFeedReaderApp
 
         private void girdView_News_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 2 && e.RowIndex != -1) //If user is clicked the URL cell 
+            if (e.ColumnIndex == 1 && e.RowIndex != -1) //If user is clicked the URL cell 
             {
                 try
                 {
@@ -71,19 +60,11 @@ namespace RssFeedReaderApp
 
             t = new System.Threading.Thread(runFeedReader);
             t.Start();
-
-            /*
-            RssFeedReader.downloadNewsToDb();
-
-            dataGridViewBinding();
-
-            */
         }
 
         private void runFeedReader()
         {
-           // while (true)
-            for(int i = 0; i <4; i++)
+            while (true)
             { 
 
                 try
@@ -106,19 +87,15 @@ namespace RssFeedReaderApp
         {
             try
             {
+                DataTable dt = new DataTable();
                 _da = new SqlDataAdapter(_cmd, _connection);
-                _da.Fill(_table);
-
-                gv_News.Invoke( (MethodInvoker)delegate { gv_News.DataSource = _table;} );
+                _da.Fill(dt);
+                gv_News.Invoke( (MethodInvoker)delegate { gv_News.DataSource = dt;} );
             }
             catch (Exception exc)
             {
                 string mss = "Cannot display news, error : " + exc.Message;
             }
-
-
         }
-
-       
     }
 }
