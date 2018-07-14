@@ -40,6 +40,10 @@
             this.colDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColHeadLines = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColLink = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.tsm_newPeriod = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsm_1day = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_2day = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_3day = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gv_News)).BeginInit();
             this.SuspendLayout();
@@ -49,22 +53,25 @@
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.toolStrip1.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsB_manageRssURL});
+            this.tsB_manageRssURL,
+            this.tsm_newPeriod});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(848, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(848, 26);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // tsB_manageRssURL
             // 
+            this.tsB_manageRssURL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.tsB_manageRssURL.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsB_manageRssURL.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.tsB_manageRssURL.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsB_manageRssURL.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.tsB_manageRssURL.Image = ((System.Drawing.Image)(resources.GetObject("tsB_manageRssURL.Image")));
             this.tsB_manageRssURL.ImageTransparentColor = System.Drawing.Color.Indigo;
             this.tsB_manageRssURL.Name = "tsB_manageRssURL";
-            this.tsB_manageRssURL.Size = new System.Drawing.Size(70, 24);
-            this.tsB_manageRssURL.Text = "RSS URL";
+            this.tsB_manageRssURL.Size = new System.Drawing.Size(124, 23);
+            this.tsB_manageRssURL.Text = "Register RSS URL";
             this.tsB_manageRssURL.Click += new System.EventHandler(this.tsB_manageRssURL_Click);
             // 
             // gv_News
@@ -84,7 +91,7 @@
             this.ColHeadLines,
             this.ColLink});
             this.gv_News.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gv_News.Location = new System.Drawing.Point(0, 27);
+            this.gv_News.Location = new System.Drawing.Point(0, 26);
             this.gv_News.Name = "gv_News";
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.Black;
@@ -95,7 +102,7 @@
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.gv_News.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.gv_News.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gv_News.Size = new System.Drawing.Size(848, 469);
+            this.gv_News.Size = new System.Drawing.Size(848, 470);
             this.gv_News.TabIndex = 2;
             this.gv_News.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.girdView_News_CellContentClick);
             // 
@@ -107,6 +114,7 @@
             this.colDateTime.HeaderText = "DateTime";
             this.colDateTime.Name = "colDateTime";
             this.colDateTime.ReadOnly = true;
+            this.colDateTime.Width = 140;
             // 
             // ColHeadLines
             // 
@@ -128,6 +136,41 @@
             this.ColLink.ReadOnly = true;
             this.ColLink.Text = "";
             this.ColLink.Width = 200;
+            // 
+            // tsm_newPeriod
+            // 
+            this.tsm_newPeriod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.tsm_newPeriod.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsm_newPeriod.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsm_1day,
+            this.tsm_2day,
+            this.tsm_3day});
+            this.tsm_newPeriod.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsm_newPeriod.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tsm_newPeriod.Image = ((System.Drawing.Image)(resources.GetObject("tsm_newPeriod.Image")));
+            this.tsm_newPeriod.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsm_newPeriod.Name = "tsm_newPeriod";
+            this.tsm_newPeriod.Size = new System.Drawing.Size(106, 23);
+            this.tsm_newPeriod.Text = "News Period";
+            // 
+            // tsm_1day
+            // 
+            this.tsm_1day.Name = "tsm_1day";
+            this.tsm_1day.Size = new System.Drawing.Size(180, 24);
+            this.tsm_1day.Text = "1";
+            this.tsm_1day.Click += new System.EventHandler(this.tsm_1day_Click);
+            // 
+            // tsm_2day
+            // 
+            this.tsm_2day.Name = "tsm_2day";
+            this.tsm_2day.Size = new System.Drawing.Size(180, 24);
+            this.tsm_2day.Text = "2";
+            // 
+            // tsm_3day
+            // 
+            this.tsm_3day.Name = "tsm_3day";
+            this.tsm_3day.Size = new System.Drawing.Size(180, 24);
+            this.tsm_3day.Text = "3";
             // 
             // RssFeedReaderApp
             // 
@@ -154,6 +197,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColHeadLines;
         private System.Windows.Forms.DataGridViewLinkColumn ColLink;
+        private System.Windows.Forms.ToolStripSplitButton tsm_newPeriod;
+        private System.Windows.Forms.ToolStripMenuItem tsm_1day;
+        private System.Windows.Forms.ToolStripMenuItem tsm_2day;
+        private System.Windows.Forms.ToolStripMenuItem tsm_3day;
     }
 }
 

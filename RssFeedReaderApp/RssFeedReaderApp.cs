@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Library.RssFeedReader;
 using System.Data.SqlClient;
+using System.Threading;
+using System.Configuration;
 
 namespace RssFeedReaderApp
 {
@@ -17,18 +19,55 @@ namespace RssFeedReaderApp
         string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
                                    + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
                                    + ";Integrated Security=True";
-        string _cmd = "SELECT title,link,updateTime FROM tNews";
+        string _cmd = "SELECT title,link,updateTime FROM tNews ORDER BY updateTime DESC";
 
         SqlConnection _connection;
         SqlDataAdapter _da;
         DataTable _table = new DataTable();
 
-        System.Threading.Thread t;
+        Thread t;
+
+        int newsExpireDay; 
 
         public RssFeedReaderApp()
         {
             InitializeComponent();
             _connection = new SqlConnection(_connectionString);
+
+            int days = 0;
+
+            if (int.TryParse(ConfigurationSettings.AppSettings["key"], out newsExpireDay) == false)
+                days = 2;
+
+            setNewsExpireHour(days);
+
+        }
+
+        private void setNewsExpireHour(int days)
+        {
+            tsm_1day.Checked = false;
+            tsm_2day.Checked = false;
+            tsm_3day.Checked = false;
+
+            switch (days)
+            {
+                case 1:
+                    tsm_1day.Checked = true;
+                    newsExpireDay = -1;
+                    break;
+                case 2:
+                    tsm_2day.Checked = true;
+                    newsExpireDay = -2;
+                    break;
+                case 3:
+                    tsm_3day.Checked = true;
+                    newsExpireDay = -3;
+                    break;
+                default:
+                    tsm_2day.Checked = true;
+                    newsExpireDay = -2;
+                    break;
+            }
         }
 
         private void tsB_manageRssURL_Click(object sender, EventArgs e)
@@ -58,7 +97,7 @@ namespace RssFeedReaderApp
         {
             //RssFeedReader.testInsert();
 
-            t = new System.Threading.Thread(runFeedReader);
+            t = new Thread(runFeedReader);
             t.Start();
         }
 
@@ -66,29 +105,34 @@ namespace RssFeedReaderApp
         {
             while (true)
             { 
-
                 try
                 {
                     RssFeedReader.downloadNewsToDb();
-
-                    //List<News> newsList = RssFeedReader.getNewsFromDb();
-                    dataGridViewBinding();
-                  
+                    dataGridViewBinding();                
                 }
                 catch (Exception exc)
                 {
                     string mss = "Cannot display news, error : " + exc.Message;
                 }
+                Thread.Sleep(1000);
             }
 
         }
 
         private void dataGridViewBinding()
         {
+            string query = string.Empty;
+            DateTime deadLines = DateTime.Now;
+            deadLines.AddDays(newsExpireDay);
+
             try
             {
                 DataTable dt = new DataTable();
-                _da = new SqlDataAdapter(_cmd, _connection);
+
+                query += "SELECT title,link,updateTime FROM tNews ORDER BY updateTime DESC; ";
+                query += "DELETE FROM tNews WHERE updateTime < '" + deadLines.ToString("yyyy-MM-dd HH:mm:ss") + "';";
+
+                _da = new SqlDataAdapter(query, _connection);
                 _da.Fill(dt);
                 gv_News.Invoke( (MethodInvoker)delegate { gv_News.DataSource = dt;} );
             }
@@ -96,6 +140,13 @@ namespace RssFeedReaderApp
             {
                 string mss = "Cannot display news, error : " + exc.Message;
             }
+        }
+
+        
+
+        private void tsm_1day_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

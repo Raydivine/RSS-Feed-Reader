@@ -184,7 +184,6 @@ namespace Library.RssFeedReader
                 foreach (string url in addList)
                 {
                     addQuery += "('" + url + "'),";
-                    //query += "INSERT INTO tRssURL (url) VALUES ('" + url + "'); ";
                 }
                 addQuery = addQuery.TrimEnd(',');
                 addQuery += " ;";
@@ -210,8 +209,8 @@ namespace Library.RssFeedReader
             List<string> urlList = getAllStoredUrl();
             List<News> newsList = new List<News>();
             string query = string.Empty;
-            string urla = "http://feeds.bbci.co.uk/news/world/rss.xml";
-            urlList.Add(urla);
+
+            urlList.Add("http://feeds.bbci.co.uk/news/world/rss.xml");
 
             if (urlList.Count == 0) return;
 
