@@ -80,36 +80,38 @@ namespace Library.RssFeedReader
 
         public static List<News> getNewsFromRssURL(string rssUrl)
         {
+            
             string err = string.Empty;
             List<News> newsList = new List<News>();
 
-            try
+            if (Uri.IsWellFormedUriString(rssUrl, UriKind.Absolute))
             {
-                using (XmlReader xmlReader = XmlReader.Create(rssUrl))
+                try
                 {
-                    SyndicationFeed syncFeed = SyndicationFeed.Load(xmlReader);
-
-                    foreach (SyndicationItem syncItem in syncFeed.Items)
+                    using (XmlReader xmlReader = XmlReader.Create(rssUrl))
                     {
-                        DateTime date = syncItem.PublishDate.DateTime;
-                        string url = syncItem.Id;
-                        string title = syncItem.Title.Text;
-                        string story = syncItem.Summary.Text;
+                        SyndicationFeed syncFeed = SyndicationFeed.Load(xmlReader);
 
-                        if (url == string.Empty || title == string.Empty)
-                            continue;
+                        foreach (SyndicationItem syncItem in syncFeed.Items)
+                        {
+                            DateTime date = syncItem.PublishDate.DateTime;
+                            string url = syncItem.Id;
+                            string title = syncItem.Title.Text;
+                            string story = syncItem.Summary.Text;
 
-                        newsList.Add(new News(date, url, title, story));
+                            if (url == string.Empty || title == string.Empty)
+                                continue;
 
+                            newsList.Add(new News(date, url, title, story));
+                        }
                     }
                 }
+                catch (Exception exc)
+                {
+                    err += "Error failed to retrieve news from RSS URL of '";
+                    err += rssUrl + "' , detail : " + exc.Message;
+                }
             }
-            catch (Exception exc)
-            {
-                err += "Error failed to retrieve news from RSS URL of '";
-                err += rssUrl + "' , detail : " + exc.Message;
-            }
-
             return newsList;
         }
 

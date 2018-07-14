@@ -49,11 +49,19 @@ namespace RssFeedReaderApp
         {
             string input = txt_RssURL.Text;
 
-            if (input != string.Empty &&  ! lb_RssUrlStore.Items.Contains(input))
+            if (input != string.Empty)
             {
-                addList.Add(txt_RssURL.Text);
-                lb_RssUrlStore.Items.Add(txt_RssURL.Text);
-            }
+                if (Uri.IsWellFormedUriString(input, UriKind.Absolute) == false)
+                    MessageBox.Show("The input you enter is not like an Url, please check again");
+                else
+                {
+                    if (!lb_RssUrlStore.Items.Contains(input))
+                    {
+                        addList.Add(txt_RssURL.Text);
+                        lb_RssUrlStore.Items.Add(txt_RssURL.Text);
+                    }
+                }
+            }     
             txt_RssURL.Clear();
         }
 

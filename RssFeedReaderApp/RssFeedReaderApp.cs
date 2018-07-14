@@ -82,20 +82,22 @@ namespace RssFeedReaderApp
 
         private void runFeedReader()
         {
-            string url = "http://feeds.bbci.co.uk/news/world/rss.xml";
+           // while (true)
+            for(int i = 0; i <4; i++)
+            { 
 
-            try
-            {
-                RssFeedReader.downloadNewsToDb();
+                try
+                {
+                    RssFeedReader.downloadNewsToDb();
 
-                List<News> newsList = RssFeedReader.getNewsFromDb();
-
-                //dataGridViewBinding();
-
-            }
-            catch(Exception exc)
-            {
-                string mss = "Cannot display news, error : " + exc.Message;
+                    //List<News> newsList = RssFeedReader.getNewsFromDb();
+                    dataGridViewBinding();
+                  
+                }
+                catch (Exception exc)
+                {
+                    string mss = "Cannot display news, error : " + exc.Message;
+                }
             }
 
         }
@@ -106,8 +108,8 @@ namespace RssFeedReaderApp
             {
                 _da = new SqlDataAdapter(_cmd, _connection);
                 _da.Fill(_table);
-                dataGridView1.DataSource = _table;
-                //gv_News.DataSource = _table;
+
+                gv_News.Invoke( (MethodInvoker)delegate { gv_News.DataSource = _table;} );
             }
             catch (Exception exc)
             {
