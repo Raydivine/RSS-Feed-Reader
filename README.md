@@ -35,6 +35,6 @@ This is a portable exe application, it store the news offline anf automatic dele
 
    <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Images/MangeUrl.PNG" height="75%" width="75%">  
 
-5. This is the [demo video](https://github.com/Raydivine/RSS-Feed-Reader/releases)
+5. This is the [demo video](https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Demo%20Video.mkv)
 
 
