@@ -63,6 +63,14 @@ namespace Library.RssFeedReader
         }
         #endregion
 
+        public News(DateTime dateTime, string link, string title)
+        {
+            this.dateTime = dateTime;
+            this.link = link;
+            this.title = title;
+            this.story = string.Empty; 
+        }
+
         public News(DateTime dateTime, string link, string title, string story)
         {
             this.dateTime = dateTime;
@@ -79,6 +87,42 @@ namespace Library.RssFeedReader
                                    + ";Integrated Security=True";
 
         public static List<News> getNewsFromRssURL(string rssUrl)
+        {
+
+            string err = string.Empty;
+            List<News> newsList = new List<News>();
+
+            if (Uri.IsWellFormedUriString(rssUrl, UriKind.Absolute))
+            {
+                try
+                {
+                    using (XmlReader xmlReader = XmlReader.Create(rssUrl))
+                    {
+                        SyndicationFeed syncFeed = SyndicationFeed.Load(xmlReader);
+
+                        foreach (SyndicationItem syncItem in syncFeed.Items)
+                        {
+                            DateTime date = syncItem.PublishDate.DateTime;
+                            string url = syncItem.Id;
+                            string title = syncItem.Title.Text;
+
+                            if (url == string.Empty || title == string.Empty)
+                                continue;
+
+                            newsList.Add(new News(date, url, title));
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    err += "Error failed to retrieve news from RSS URL of '";
+                    err += rssUrl + "' , detail : " + exc.Message;
+                }
+            }
+            return newsList;
+        }
+
+        public static List<News> getNewsFromRssURL(string rssUrl, DateTime expireDate)
         {
             
             string err = string.Empty;
@@ -97,12 +141,12 @@ namespace Library.RssFeedReader
                             DateTime date = syncItem.PublishDate.DateTime;
                             string url = syncItem.Id;
                             string title = syncItem.Title.Text;
-                            string story = syncItem.Summary.Text;
 
-                            if (url == string.Empty || title == string.Empty)
+                       
+                            if ( url == string.Empty || title == string.Empty || ( date != null && date < expireDate)     )
                                 continue;
 
-                            newsList.Add(new News(date, url, title, story));
+                            newsList.Add(new News(date, url, title));
                         }
                     }
                 }
@@ -204,19 +248,19 @@ namespace Library.RssFeedReader
             return addQuery + remvQuey;
         }
 
-        public static void downloadNewsToDb()
+        public static void downloadNewsToDb(DateTime expireDate)
         {
             List<string> urlList = getAllStoredUrl();
             List<News> newsList = new List<News>();
             string query = string.Empty;
 
-            urlList.Add("http://feeds.bbci.co.uk/news/world/rss.xml");
+            //urlList.Add("http://feeds.bbci.co.uk/news/world/rss.xml");
 
             if (urlList.Count == 0) return;
 
             foreach (string url in urlList)
             {
-                newsList.AddRange(getNewsFromRssURL(url));
+                newsList.AddRange(getNewsFromRssURL(url, expireDate));
             }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -315,7 +359,7 @@ namespace Library.RssFeedReader
                             string link = reader["link"].ToString();
                             DateTime dateTime = DateTime.Parse((reader["updateTime"].ToString()));
 
-                            newsList.Add(new News(dateTime, link, title, ""));
+                            newsList.Add(new News(dateTime, link, title));
                         }
                     }
                     connection.Close();

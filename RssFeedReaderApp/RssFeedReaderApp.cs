@@ -27,20 +27,43 @@ namespace RssFeedReaderApp
 
         Thread t;
 
-        int newsExpireDay; 
+        int expireDayFrame;
+        DateTime expireDate;
+
 
         public RssFeedReaderApp()
         {
             InitializeComponent();
             _connection = new SqlConnection(_connectionString);
 
-            int days = 0;
 
-            if (int.TryParse(ConfigurationSettings.AppSettings["key"], out newsExpireDay) == false)
-                days = 2;
+            if (int.TryParse(ConfigurationSettings.AppSettings["key"], out expireDayFrame) == false)
+                expireDayFrame = 3;
 
-            setNewsExpireHour(days);
+            setNewsExpireHour(expireDayFrame);
 
+        }
+
+        private void setDaysFrameInAppConfig(int days)
+        {
+            try
+            {
+                /*
+                Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+                config.AppSettings.Settings.Add("key", days.ToString() );
+                config.AppSettings.Settings.
+                config.Save(ConfigurationSaveMode.Minimal);*/
+
+                Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+                config.AppSettings.Settings["key"].Value = days.ToString();
+                config.Save();
+
+                ConfigurationManager.RefreshSection("appSettings");
+            }
+            catch (Exception exc)
+            {
+                string message = "Cannot update app config file, error : " + exc.Message;
+            }
         }
 
         private void setNewsExpireHour(int days)
@@ -53,19 +76,15 @@ namespace RssFeedReaderApp
             {
                 case 1:
                     tsm_1day.Checked = true;
-                    newsExpireDay = -1;
                     break;
                 case 2:
                     tsm_2day.Checked = true;
-                    newsExpireDay = -2;
                     break;
                 case 3:
                     tsm_3day.Checked = true;
-                    newsExpireDay = -3;
                     break;
                 default:
                     tsm_2day.Checked = true;
-                    newsExpireDay = -2;
                     break;
             }
         }
@@ -95,8 +114,6 @@ namespace RssFeedReaderApp
 
         private void RssFeedReaderApp_Load(object sender, EventArgs e)
         {
-            //RssFeedReader.testInsert();
-
             t = new Thread(runFeedReader);
             t.Start();
         }
@@ -104,17 +121,19 @@ namespace RssFeedReaderApp
         private void runFeedReader()
         {
             while (true)
-            { 
+            {
+                expireDate = DateTime.Now.AddDays(-expireDayFrame);
+
                 try
                 {
-                    RssFeedReader.downloadNewsToDb();
+                    RssFeedReader.downloadNewsToDb(expireDate);
                     dataGridViewBinding();                
                 }
                 catch (Exception exc)
                 {
                     string mss = "Cannot display news, error : " + exc.Message;
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(10000);
             }
 
         }
@@ -122,15 +141,13 @@ namespace RssFeedReaderApp
         private void dataGridViewBinding()
         {
             string query = string.Empty;
-            DateTime deadLines = DateTime.Now;
-            deadLines.AddDays(newsExpireDay);
 
             try
             {
                 DataTable dt = new DataTable();
-
+            
+                query += "DELETE FROM tNews WHERE updateTime < '" + expireDate.ToString("yyyy-MM-dd HH:mm:ss") + "';";
                 query += "SELECT title,link,updateTime FROM tNews ORDER BY updateTime DESC; ";
-                query += "DELETE FROM tNews WHERE updateTime < '" + deadLines.ToString("yyyy-MM-dd HH:mm:ss") + "';";
 
                 _da = new SqlDataAdapter(query, _connection);
                 _da.Fill(dt);
@@ -146,7 +163,20 @@ namespace RssFeedReaderApp
 
         private void tsm_1day_Click(object sender, EventArgs e)
         {
+            setNewsExpireHour(1);
+            setDaysFrameInAppConfig(1);
+        }
 
+        private void tsm_2day_Click(object sender, EventArgs e)
+        {
+            setNewsExpireHour(2);
+            setDaysFrameInAppConfig(2);
+        }
+
+        private void tsm_3day_Click(object sender, EventArgs e)
+        {
+            setNewsExpireHour(3);
+            setDaysFrameInAppConfig(3);
         }
     }
 }
