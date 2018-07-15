@@ -142,7 +142,6 @@ namespace Library.RssFeedReader
                             string url = syncItem.Id;
                             string title = syncItem.Title.Text;
 
-                       
                             if ( url == string.Empty || title == string.Empty || ( date != null && date < expireDate)     )
                                 continue;
 
@@ -252,9 +251,6 @@ namespace Library.RssFeedReader
         {
             List<string> urlList = getAllStoredUrl();
             List<News> newsList = new List<News>();
-            string query = string.Empty;
-
-            //urlList.Add("http://feeds.bbci.co.uk/news/world/rss.xml");
 
             if (urlList.Count == 0) return;
 
@@ -302,40 +298,6 @@ namespace Library.RssFeedReader
                 string errMss = "Cannot connect to database , error : " + exc.Message;
             }
         }
-
-        /*
-        private static void insertTheNewsIfIsNotInDb(SqlConnection connection, News news)
-        {
-            string query = "SELECT link FROM tNews WHERE tNews.Link ='" + news.Link + "'";
-
-            try
-            {
-
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    if (!reader.HasRows)
-                    {
-                        string title = news.Title.Replace("\'", "");
-                        string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
-
-
-                        query = "INSERT INTO tNews (title,link,updateTime) VALUES ('" + title + "','" + news.Link + "','" + sqlDateTime + "'); ";
-
-                        //query = "INSERT INTO tNews (title,link,updateTime) VALUES ('trump',' link ','" + sqlDateTime + "'); ";
-                        reader.Close();
-                        cmd.CommandText = query;
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                string errMss = "Cannot connect to database , error : " + exc.Message;
-            }
-        }
-        */
 
         public static List<News> getNewsFromDb()
         {

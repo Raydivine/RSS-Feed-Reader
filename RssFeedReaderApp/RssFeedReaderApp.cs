@@ -178,5 +178,21 @@ namespace RssFeedReaderApp
             setNewsExpireHour(3);
             setDaysFrameInAppConfig(3);
         }
+
+
+
+        private void tsb_help_Click(object sender, EventArgs e)
+        {
+            string mss = "This is a portable Rss Feed Reader\n\n";
+            mss += "1. Click 'Register RSS URL' to subscribe your news\nAfter subscribe, the news will download and store offline\n\n";
+            mss += "2. Click 'News Expire Days Frame' to set your news's expire days frame";
+            mss += ", the news wont be keep when the publish date has reach the date\n\n";
+            mss += "You can click the new's link to open it in browser\n";
+            mss += "Please go to this link for demo guide, thanks\n";
+            mss += "https://github.com/Raydivine/RSS-Feed-Reader";
+
+            MessageBox.Show(mss);
+
+        }
     }
 }

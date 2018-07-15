@@ -82,5 +82,14 @@ namespace RssFeedReaderApp
                 RssFeedReader.manageUrlInDb(addList, removeList);
             }
         }
+
+        private void btn_help_Click(object sender, EventArgs e)
+        {
+            string mss = "Please insert a valid Rss URL in the textbox, then click the 'Add' button.\n";
+            mss += "If you would like remove an url, select it from the combo box, then click 'Remove' button\n";
+            mss += "Your subscribed url will be updated after you close this form";
+
+            MessageBox.Show(mss);
+        }
     }
 }

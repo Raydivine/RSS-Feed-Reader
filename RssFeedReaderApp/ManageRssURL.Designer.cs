@@ -33,6 +33,7 @@
             this.lb_RssUrlStore = new System.Windows.Forms.ListBox();
             this.btn_addUrl = new System.Windows.Forms.Button();
             this.btn_Remove = new System.Windows.Forms.Button();
+            this.btn_help = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -85,11 +86,23 @@
             this.btn_Remove.UseVisualStyleBackColor = true;
             this.btn_Remove.Click += new System.EventHandler(this.btn_Remove_Click);
             // 
+            // btn_help
+            // 
+            this.btn_help.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_help.Location = new System.Drawing.Point(354, 10);
+            this.btn_help.Name = "btn_help";
+            this.btn_help.Size = new System.Drawing.Size(75, 23);
+            this.btn_help.TabIndex = 6;
+            this.btn_help.Text = "Help";
+            this.btn_help.UseVisualStyleBackColor = true;
+            this.btn_help.Click += new System.EventHandler(this.btn_help_Click);
+            // 
             // ManageRssURL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 283);
+            this.Controls.Add(this.btn_help);
             this.Controls.Add(this.btn_Remove);
             this.Controls.Add(this.btn_addUrl);
             this.Controls.Add(this.lb_RssUrlStore);
@@ -110,5 +123,6 @@
         private System.Windows.Forms.ListBox lb_RssUrlStore;
         private System.Windows.Forms.Button btn_addUrl;
         private System.Windows.Forms.Button btn_Remove;
+        private System.Windows.Forms.Button btn_help;
     }
 }
