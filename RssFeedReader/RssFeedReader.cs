@@ -250,18 +250,6 @@ namespace Library.RssFeedReader
         {
             string addQuery = string.Empty, remvQuey = string.Empty;
 
-            if (addList.Count > 0)
-            {
-                addQuery = "INSERT INTO tRssURL (url) VALUES ";
-
-                foreach (string url in addList)
-                {
-                    addQuery += "('" + url + "'),";
-                }
-                addQuery = addQuery.TrimEnd(',');
-                addQuery += " ;";
-            }
-
             if (removeList.Count > 0)
             {
                 remvQuey = "DELETE FROM tRssURL WHERE url IN (";
@@ -271,10 +259,16 @@ namespace Library.RssFeedReader
                     remvQuey += "'" + url + "',";
                 }
                 remvQuey = remvQuey.TrimEnd(',');
-                remvQuey += ") ;";
+                remvQuey += ") ; ";
             }
 
-            return addQuery + remvQuey;
+            foreach (string url in addList)
+            {
+                addQuery += "INSERT INTO tRssURL (url) SELECT '" + url + "' ";
+                addQuery += "WHERE NOT EXISTS (SELECT url FROM tRssURL WHERE tRssURL.url = '" + url + "'); ";
+            }
+
+            return remvQuey + addQuery;
         }
 
         /// <summary>

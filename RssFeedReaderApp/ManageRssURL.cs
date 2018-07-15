@@ -17,7 +17,6 @@ namespace RssFeedReaderApp
         string errMss = string.Empty;
         string itemToRemove = string.Empty;
 
-        List<string> addList = new List<string>();
         List<string> removeList = new List<string>();
 
         string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
@@ -53,7 +52,6 @@ namespace RssFeedReaderApp
                 {
                     if (!lb_RssUrlStore.Items.Contains(input))
                     {
-                        addList.Add(txt_RssURL.Text);
                         lb_RssUrlStore.Items.Add(txt_RssURL.Text);
                     }
                 }
@@ -73,9 +71,11 @@ namespace RssFeedReaderApp
 
         private void form_FormClosing(object sender, FormClosingEventArgs e)
         {
+            List<string> urls = lb_RssUrlStore.Items.Cast<string>().ToList();
+
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                RssFeedReader.manageUrlInDb(addList, removeList);
+                RssFeedReader.manageUrlInDb(urls, removeList);
             }
         }
 
