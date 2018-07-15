@@ -20,13 +20,9 @@ namespace RssFeedReaderApp
         List<string> addList = new List<string>();
         List<string> removeList = new List<string>();
 
-
-        // String connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Source\Repos\RSS-Feed-Reader\RssFeedReader\rssFeedReader.mdf;Integrated Security = True";
-
         string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
                                     + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
                                     + ";Integrated Security=True";
-
 
         public ManageRssURL()
         {

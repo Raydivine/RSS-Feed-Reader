@@ -19,29 +19,71 @@ namespace RssFeedReaderApp
         string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
                                    + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
                                    + ";Integrated Security=True";
-        string _cmd = "SELECT title,link,updateTime FROM tNews ORDER BY updateTime DESC";
 
         SqlConnection _connection;
-        SqlDataAdapter _da;
-        DataTable _table = new DataTable();
-
+        SqlDataAdapter _sqlAdapter;
         Thread t;
 
         int expireDayFrame;
         DateTime expireDate;
-
 
         public RssFeedReaderApp()
         {
             InitializeComponent();
             _connection = new SqlConnection(_connectionString);
 
-
-            if (int.TryParse(ConfigurationSettings.AppSettings["key"], out expireDayFrame) == false)
+            if (int.TryParse(ConfigurationSettings.AppSettings["key"], out expireDayFrame) == false) //Failed to read data from config file
                 expireDayFrame = 3;
 
             updateButtonCheckedState(expireDayFrame);
+        }
 
+        private void RssFeedReaderApp_Load(object sender, EventArgs e)
+        {
+            t = new Thread(runFeedReader);
+            t.Start();
+        }
+
+        private void runFeedReader()
+        {
+            while (true)
+            {
+                expireDate = DateTime.Now.AddDays(-expireDayFrame); // ExpireDay = Today - expireDayFrame 
+
+                try
+                {
+                    RssFeedReader.downloadNewsToDb(expireDate);
+                    removeExpireNewsThenBindTheDbToGridView();                
+                }
+                catch (Exception exc)
+                {
+                    string mss = "Cannot display news, error : " + exc.Message;
+                }
+                Thread.Sleep(10000);
+            }
+
+        }
+
+        #region Methods
+        /// <summary>
+        /// remove the exipire new from database, then bind it to grid view
+        /// </summary>
+        private void removeExpireNewsThenBindTheDbToGridView()
+        {
+            string query = "DELETE FROM tNews WHERE updateTime < '" + expireDate.ToString("yyyy-MM-dd HH:mm:ss") + "';";
+            query += "SELECT title,link,updateTime FROM tNews ORDER BY updateTime DESC; ";
+
+            try
+            {
+                DataTable datatbale = new DataTable();
+                _sqlAdapter = new SqlDataAdapter(query, _connection);
+                _sqlAdapter.Fill(datatbale);
+                gv_News.Invoke((MethodInvoker)delegate { gv_News.DataSource = datatbale; });
+            }
+            catch (Exception exc)
+            {
+                string mss = "Cannot display news, error : " + exc.Message;
+            }
         }
 
         /// <summary>
@@ -55,7 +97,6 @@ namespace RssFeedReaderApp
                 Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
                 config.AppSettings.Settings["key"].Value = days.ToString();
                 config.Save();
-
                 ConfigurationManager.RefreshSection("appSettings");
             }
             catch (Exception exc)
@@ -90,7 +131,9 @@ namespace RssFeedReaderApp
                     break;
             }
         }
+        #endregion
 
+        #region Control Event Handler
         private void tsB_manageRssURL_Click(object sender, EventArgs e)
         {
             ManageRssURL manageRssURLForm = new ManageRssURL();
@@ -114,59 +157,10 @@ namespace RssFeedReaderApp
             }
         }
 
-        private void RssFeedReaderApp_Load(object sender, EventArgs e)
-        {
-            t = new Thread(runFeedReader);
-            t.Start();
-        }
-
-        private void runFeedReader()
-        {
-            while (true)
-            {
-                expireDate = DateTime.Now.AddDays(-expireDayFrame); // ExpireDay = Today - expireDayFrame 
-
-                try
-                {
-                    RssFeedReader.downloadNewsToDb(expireDate);
-                    dataGridViewBinding();                
-                }
-                catch (Exception exc)
-                {
-                    string mss = "Cannot display news, error : " + exc.Message;
-                }
-                Thread.Sleep(10000);
-            }
-
-        }
-
-        private void dataGridViewBinding()
-        {
-            string query = string.Empty;
-
-            try
-            {
-                DataTable dt = new DataTable();
-            
-                query += "DELETE FROM tNews WHERE updateTime < '" + expireDate.ToString("yyyy-MM-dd HH:mm:ss") + "';";
-                query += "SELECT title,link,updateTime FROM tNews ORDER BY updateTime DESC; ";
-
-                _da = new SqlDataAdapter(query, _connection);
-                _da.Fill(dt);
-                gv_News.Invoke( (MethodInvoker)delegate { gv_News.DataSource = dt;} );
-            }
-            catch (Exception exc)
-            {
-                string mss = "Cannot display news, error : " + exc.Message;
-            }
-        }
-
-        
-
         private void tsm_1day_Click(object sender, EventArgs e)
         {
             expireDayFrame = 1;
-            updateButtonCheckedState(1);    
+            updateButtonCheckedState(1);
             setDaysFrameInAppConfig(1);
         }
 
@@ -184,8 +178,6 @@ namespace RssFeedReaderApp
             setDaysFrameInAppConfig(3);
         }
 
-
-
         private void tsb_help_Click(object sender, EventArgs e)
         {
             string mss = "This is a portable Rss Feed Reader\n\n";
@@ -199,5 +191,10 @@ namespace RssFeedReaderApp
             MessageBox.Show(mss);
 
         }
+        #endregion
+
     }
+
+
+
 }

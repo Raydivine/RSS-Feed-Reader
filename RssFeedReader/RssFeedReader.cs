@@ -6,23 +6,27 @@ using System.Xml;
 
 namespace Library.RssFeedReader
 {
+    /// <summary>
+    /// Strucutre of News,
+    /// it contain 4 member which indicate 
+    /// </summary>
     public struct News
     {
-        DateTime dateTime;
+        DateTime publishDate;
         string link;
         string title;
         string story;
 
         #region Properties
-        public DateTime DateTime
+        public DateTime PublishDate
         {
             get
             {
-                return this.dateTime;
+                return this.publishDate;
             }
             set
             {
-                this.dateTime = value;
+                this.publishDate = value;
             }
         }
 
@@ -63,9 +67,10 @@ namespace Library.RssFeedReader
         }
         #endregion
 
+        #region Constructor
         public News(DateTime dateTime, string link, string title)
         {
-            this.dateTime = dateTime;
+            this.publishDate = dateTime;
             this.link = link;
             this.title = title;
             this.story = string.Empty; 
@@ -73,11 +78,12 @@ namespace Library.RssFeedReader
 
         public News(DateTime dateTime, string link, string title, string story)
         {
-            this.dateTime = dateTime;
+            this.publishDate = dateTime;
             this.link = link;
             this.title = title;
             this.story = story;
-        }   
+        }
+        #endregion
     }
 
     public static class RssFeedReader
@@ -93,7 +99,6 @@ namespace Library.RssFeedReader
         /// <returns>list of news</returns>
         public static List<News> getNewsFromRssURL(string rssUrl)
         {
-
             string err = string.Empty;
             List<News> newsList = new List<News>();
 
@@ -134,8 +139,7 @@ namespace Library.RssFeedReader
         /// <param name="expireDate"> the expired date of new</param>
         /// <returns>list of news</returns>
         public static List<News> getNewsFromRssURL(string rssUrl, DateTime expireDate)
-        {
-            
+        {        
             string err = string.Empty;
             List<News> newsList = new List<News>();
 
@@ -315,7 +319,7 @@ namespace Library.RssFeedReader
         private static void insertTheNewsIfIsNotInDb(SqlConnection connection, News news)
         {
             string title = news.Title.Replace("\'", "");
-            string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            string sqlDateTime = news.PublishDate.ToString("yyyy-MM-dd HH:mm:ss");
 
             string query = "INSERT INTO tNews (title,link,updateTime) SELECT ";
             query += "'" + title + "','" + news.Link + "','" + sqlDateTime + "' ";
@@ -374,6 +378,9 @@ namespace Library.RssFeedReader
             return newsList;
         }
 
+        #endregion
+
+        #region Un-used Methods
         private static string buildTheQueryToDownloadNews(List<News> newsList)
         {
             string query = string.Empty;
@@ -383,7 +390,7 @@ namespace Library.RssFeedReader
                 foreach (News news in newsList)
                 {
                     string title = news.Title.Replace("\'", "");
-                    string sqlDateTime = news.DateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    string sqlDateTime = news.PublishDate.ToString("yyyy-MM-dd HH:mm:ss");
 
                     query += "INSERT INTO tNews (title,link,updateTime) SELECT ";
                     query += "'" + title + "','" + news.Link + "','" + sqlDateTime + "' ";
@@ -415,10 +422,8 @@ namespace Library.RssFeedReader
                     string errMss = "Cannot connect to database , error : " + exc.Message;
                 }
             }
-
         }
-            
-        #endregion 
+        #endregion
 
     }
 }
