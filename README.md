@@ -12,16 +12,16 @@ RSS works by having the website author maintain a list of notifications on their
 <h2> Where to get RSS URL</h2>
 Most of <b>News website</b> like BBC, CNN and FOX are providing their rss feed , here are some
 
-http://feeds.bbci.co.uk/news/world/rss.xml
-http://feeds.foxnews.com/foxnews/latest
-http://rss.cnn.com/rss/edition.rss
+http://feeds.bbci.co.uk/news/world/rss.xml <br /> 
+http://feeds.foxnews.com/foxnews/latest   <br /> 
+http://rss.cnn.com/rss/edition.rss  <br /> 
 
 The <b>social medias</b> like facebook and twitter are providing rss feed too, you can use them track your favourite Blogger
 
 <h2> How to use this software</h2>
 This is a portable exe application, it store the news offline anf automatic delete them if outdated
 
-1. Download this application via Release branch
+1. Download this application via [Release](https://github.com/Raydivine/RSS-Feed-Reader/releases)
 
 2. Extract the zip file and open the exe application
 
@@ -33,6 +33,8 @@ This is a portable exe application, it store the news offline anf automatic dele
 4. This is the second form that let you register RSS Url for subsribe news.
    You can add and remove your RSS Url.
 
-   <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Images/MangeUrl.PNG" height="75%" width="75%">   
+   <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Images/MangeUrl.PNG" height="75%" width="75%">  
+
+5. This is the [demo video](https://github.com/Raydivine/RSS-Feed-Reader/releases)
 
 

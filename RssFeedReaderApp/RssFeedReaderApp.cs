@@ -41,6 +41,7 @@ namespace RssFeedReaderApp
         private void RssFeedReaderApp_Load(object sender, EventArgs e)
         {
             t = new Thread(runFeedReader);
+            t.IsBackground = true;
             t.Start();
         }
 
@@ -193,6 +194,10 @@ namespace RssFeedReaderApp
         }
         #endregion
 
+        private void RssFeedReaderApp_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
+        }
     }
 
 

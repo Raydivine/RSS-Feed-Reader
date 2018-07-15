@@ -198,6 +198,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "RssFeedReaderApp";
             this.Text = "RSS Feed Reader";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RssFeedReaderApp_FormClosing);
             this.Load += new System.EventHandler(this.RssFeedReaderApp_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
