@@ -132,6 +132,11 @@ namespace RssFeedReaderApp
                     break;
             }
         }
+
+        private void RssFeedReaderApp_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(Environment.ExitCode);
+        }
         #endregion
 
         #region Control Event Handler
@@ -194,10 +199,9 @@ namespace RssFeedReaderApp
         }
         #endregion
 
-        private void RssFeedReaderApp_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Environment.Exit(Environment.ExitCode);
-        }
+
+
+        
     }
 
 
