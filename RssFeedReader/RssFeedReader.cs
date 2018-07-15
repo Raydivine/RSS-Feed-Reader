@@ -86,6 +86,11 @@ namespace Library.RssFeedReader
                                    + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
                                    + ";Integrated Security=True";
 
+        /// <summary>
+        /// Get the list of news from a RSS  Feed URL
+        /// </summary>
+        /// <param name="rssUrl"> the feed url</param>
+        /// <returns>list of news</returns>
         public static List<News> getNewsFromRssURL(string rssUrl)
         {
 
@@ -122,6 +127,12 @@ namespace Library.RssFeedReader
             return newsList;
         }
 
+        /// <summary>
+        /// Get the list of non-expired news from a RSS  Feed URL
+        /// </summary>
+        /// <param name="rssUrl"> the feed url</param>
+        /// <param name="expireDate"> the expired date of new</param>
+        /// <returns>list of news</returns>
         public static List<News> getNewsFromRssURL(string rssUrl, DateTime expireDate)
         {
             
@@ -160,6 +171,10 @@ namespace Library.RssFeedReader
 
         #region Methods of DataBase Manage
 
+        /// <summary>
+        /// Get the list RSS URL From table
+        /// </summary>
+        /// <returns>list of Rss URL</returns>
         public static List<string> getAllStoredUrl()
         {
             List<string> urls = new List<string>();
@@ -190,6 +205,11 @@ namespace Library.RssFeedReader
             return urls;
         }
 
+        /// <summary>
+        /// Manage the Rss Url in DataBase
+        /// </summary>
+        /// <param name="addList"> the new added urls</param>
+        /// <param name="removeList"> the urls going to remove</param>
         public static void manageUrlInDb(List<string> addList, List<string> removeList)
         {
             if (addList.Count + removeList.Count == 0)
@@ -216,6 +236,12 @@ namespace Library.RssFeedReader
             }
         }
 
+        /// <summary>
+        /// Build a query that add new added urls, and remove the unwanted urls
+        /// </summary>
+        /// <param name="addList"> the new added urls</param>
+        /// <param name="removeList"> the urls going to remove</param>
+        /// <returns>  a query to update databse</returns>
         private static string buildTheQueryToManageUrl(List<string> addList, List<string> removeList)
         {
             string addQuery = string.Empty, remvQuey = string.Empty;
@@ -247,6 +273,10 @@ namespace Library.RssFeedReader
             return addQuery + remvQuey;
         }
 
+        /// <summary>
+        /// Download non- expire News to Database
+        /// </summary>
+        /// <param name="expireDate"> the expiredate of news </param>
         public static void downloadNewsToDb(DateTime expireDate)
         {
             List<string> urlList = getAllStoredUrl();
@@ -277,6 +307,11 @@ namespace Library.RssFeedReader
             }
         }
 
+        /// <summary>
+        /// Inset a news into Db
+        /// </summary>
+        /// <param name="connection"> an opened databse connection</param>
+        /// <param name="news"> a news that is going to add into database</param>
         private static void insertTheNewsIfIsNotInDb(SqlConnection connection, News news)
         {
             string title = news.Title.Replace("\'", "");
@@ -299,6 +334,10 @@ namespace Library.RssFeedReader
             }
         }
 
+        /// <summary>
+        /// Get List of News From Databse
+        /// </summary>
+        /// <returns> list of news</returns
         public static List<News> getNewsFromDb()
         {
             List<News> newsList = new List<News>();

@@ -40,20 +40,18 @@ namespace RssFeedReaderApp
             if (int.TryParse(ConfigurationSettings.AppSettings["key"], out expireDayFrame) == false)
                 expireDayFrame = 3;
 
-            setNewsExpireHour(expireDayFrame);
+            updateButtonCheckedState(expireDayFrame);
 
         }
 
+        /// <summary>
+        /// Set the days Frame in App Config file
+        /// </summary>
+        /// <param name="days"> number of days to indicate whenthe news expire</param>
         private void setDaysFrameInAppConfig(int days)
         {
             try
             {
-                /*
-                Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
-                config.AppSettings.Settings.Add("key", days.ToString() );
-                config.AppSettings.Settings.
-                config.Save(ConfigurationSaveMode.Minimal);*/
-
                 Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
                 config.AppSettings.Settings["key"].Value = days.ToString();
                 config.Save();
@@ -66,7 +64,11 @@ namespace RssFeedReaderApp
             }
         }
 
-        private void setNewsExpireHour(int days)
+        /// <summary>
+        /// Update the toolStrip button check state, byright only 1 can be checked
+        /// </summary>
+        /// <param name="number of days"></param>
+        private void updateButtonCheckedState(int days)
         {
             tsm_1day.Checked = false;
             tsm_2day.Checked = false;
@@ -122,7 +124,7 @@ namespace RssFeedReaderApp
         {
             while (true)
             {
-                expireDate = DateTime.Now.AddDays(-expireDayFrame);
+                expireDate = DateTime.Now.AddDays(-expireDayFrame); // ExpireDay = Today - expireDayFrame 
 
                 try
                 {
@@ -163,19 +165,22 @@ namespace RssFeedReaderApp
 
         private void tsm_1day_Click(object sender, EventArgs e)
         {
-            setNewsExpireHour(1);
+            expireDayFrame = 1;
+            updateButtonCheckedState(1);    
             setDaysFrameInAppConfig(1);
         }
 
         private void tsm_2day_Click(object sender, EventArgs e)
         {
-            setNewsExpireHour(2);
+            expireDayFrame = 2;
+            updateButtonCheckedState(2);
             setDaysFrameInAppConfig(2);
         }
 
         private void tsm_3day_Click(object sender, EventArgs e)
         {
-            setNewsExpireHour(3);
+            expireDayFrame = 3;
+            updateButtonCheckedState(3);
             setDaysFrameInAppConfig(3);
         }
 
