@@ -19,7 +19,7 @@ http://rss.cnn.com/rss/edition.rss  <br />
 The <b>social medias</b> like facebook and twitter are providing rss feed too, you can use them to track your favourite Blogger
 
 <h2> How to use this software</h2>
-This is a portable exe application, it store the news offline anf automatic delete them if outdated
+This is a portable exe application, it store the news offline and automatic delete them if outdated
 
 1. Download this application via [Release](https://github.com/Raydivine/RSS-Feed-Reader/releases)
 
