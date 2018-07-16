@@ -10,7 +10,7 @@ Repeatedly checking each website to see if there is any new content can be very 
 RSS works by having the website author maintain a list of notifications on their website in a standard way. This list of notifications is called an "RSS Feed". People who are interested in finding out the latest headlines or changes can check this list.
 
 <h2> Where to get RSS URL</h2>
-Most of <b>News website</b> like BBC, CNN and FOX are providing their rss feed , here are some
+Most of <b>News website</b> like BBC, CNN and FOX are providing their rss feed , here are some <br /> 
 
 http://feeds.bbci.co.uk/news/world/rss.xml <br /> 
 http://feeds.foxnews.com/foxnews/latest   <br /> 
@@ -28,13 +28,15 @@ This is a portable exe application, it store the news offline anf automatic dele
 3. This is the main form which has register RSS Url, the News will be automatic download after you register.
    You can choose 1 - 3 days for your news time frame. Example for 1 day, this reader will only keep today and yesterday's news.
 
-   <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Images/MainScreen.PNG" height="75%" width="75%">
+   <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Images/MainScreen.PNG" height="100%" width="100%">
    
 4. This is the second form that let you register RSS Url for subsribe news.
    You can add and remove your RSS Url.
 
-   <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Images/MangeUrl.PNG" height="75%" width="75%">  
+   <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Images/MangeUrl.PNG" height="85%" width="85%">  
 
 5. This is the [demo video](https://github.com/Raydivine/RSS-Feed-Reader/releases)
+
+This project is welcome anyone to copy, modify and republish, enjoys. 
 
 
