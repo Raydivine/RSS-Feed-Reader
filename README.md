@@ -11,7 +11,7 @@ RSS works by having the website author maintain a list of notifications on their
 
 <h2> Where to get RSS URL</h2>
 Most of <b>News website</b> like BBC, CNN and FOX are providing their rss feed , here are some <br /> 
-
+<br/>
 http://feeds.bbci.co.uk/news/world/rss.xml <br /> 
 http://feeds.foxnews.com/foxnews/latest   <br /> 
 http://rss.cnn.com/rss/edition.rss  <br /> 
@@ -37,6 +37,6 @@ This is a portable exe application, it store the news offline anf automatic dele
 
 5. This is the [demo video](https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/Demo%20Video.mkv), you can download      and watch it.
 
-This project is welcome anyone to copy, modify and republish, enjoys. 
+This project is welcome anyone to <b>copy, modify and republish</b>, enjoys. 
 
 
