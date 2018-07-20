@@ -101,6 +101,7 @@ namespace RssFeedReaderApp
             {
                 RssFeedReader.updateUrlInDb(existed, removeList);
             }
+       
         }
 
         /// <summary>

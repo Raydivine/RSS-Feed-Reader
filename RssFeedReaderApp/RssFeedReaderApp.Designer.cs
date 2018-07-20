@@ -37,7 +37,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsB_manageRssURL = new System.Windows.Forms.ToolStripButton();
-            this.tsm_newPeriod = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsm_daysFrame = new System.Windows.Forms.ToolStripSplitButton();
             this.tsm_1day = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_2day = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_3day = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +46,10 @@
             this.colDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColHeadLines = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColLink = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.tsm_refreshPeriod = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsm_refresh_1Hour = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_refresh_10min = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_refresh_10Sec = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gv_News)).BeginInit();
             this.SuspendLayout();
@@ -56,8 +60,9 @@
             this.toolStrip1.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsB_manageRssURL,
-            this.tsm_newPeriod,
-            this.tsb_help});
+            this.tsm_daysFrame,
+            this.tsb_help,
+            this.tsm_refreshPeriod});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(848, 26);
@@ -77,21 +82,21 @@
             this.tsB_manageRssURL.Text = "Register RSS URL";
             this.tsB_manageRssURL.Click += new System.EventHandler(this.tsB_manageRssURL_Click);
             // 
-            // tsm_newPeriod
+            // tsm_daysFrame
             // 
-            this.tsm_newPeriod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.tsm_newPeriod.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsm_newPeriod.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsm_daysFrame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.tsm_daysFrame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsm_daysFrame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsm_1day,
             this.tsm_2day,
             this.tsm_3day});
-            this.tsm_newPeriod.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tsm_newPeriod.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.tsm_newPeriod.Image = ((System.Drawing.Image)(resources.GetObject("tsm_newPeriod.Image")));
-            this.tsm_newPeriod.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsm_newPeriod.Name = "tsm_newPeriod";
-            this.tsm_newPeriod.Size = new System.Drawing.Size(185, 23);
-            this.tsm_newPeriod.Text = "News Expire Days Frame";
+            this.tsm_daysFrame.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsm_daysFrame.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tsm_daysFrame.Image = ((System.Drawing.Image)(resources.GetObject("tsm_daysFrame.Image")));
+            this.tsm_daysFrame.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsm_daysFrame.Name = "tsm_daysFrame";
+            this.tsm_daysFrame.Size = new System.Drawing.Size(185, 23);
+            this.tsm_daysFrame.Text = "News Expire Days Frame";
             // 
             // tsm_1day
             // 
@@ -211,6 +216,41 @@
             this.ColLink.VisitedLinkColor = System.Drawing.Color.Black;
             this.ColLink.Width = 200;
             // 
+            // tsm_refreshPeriod
+            // 
+            this.tsm_refreshPeriod.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsm_refreshPeriod.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsm_refresh_1Hour,
+            this.tsm_refresh_10min,
+            this.tsm_refresh_10Sec});
+            this.tsm_refreshPeriod.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsm_refreshPeriod.Image = ((System.Drawing.Image)(resources.GetObject("tsm_refreshPeriod.Image")));
+            this.tsm_refreshPeriod.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsm_refreshPeriod.Name = "tsm_refreshPeriod";
+            this.tsm_refreshPeriod.Size = new System.Drawing.Size(157, 23);
+            this.tsm_refreshPeriod.Text = "News Refresh Period";
+            // 
+            // tsm_refresh_1Hour
+            // 
+            this.tsm_refresh_1Hour.Name = "tsm_refresh_1Hour";
+            this.tsm_refresh_1Hour.Size = new System.Drawing.Size(180, 24);
+            this.tsm_refresh_1Hour.Text = "1 Hour";
+            this.tsm_refresh_1Hour.Click += new System.EventHandler(this.tsm_1Hour_Click);
+            // 
+            // tsm_refresh_10min
+            // 
+            this.tsm_refresh_10min.Name = "tsm_refresh_10min";
+            this.tsm_refresh_10min.Size = new System.Drawing.Size(180, 24);
+            this.tsm_refresh_10min.Text = "10 minutes";
+            this.tsm_refresh_10min.Click += new System.EventHandler(this.tsm_10min_Click);
+            // 
+            // tsm_refresh_10Sec
+            // 
+            this.tsm_refresh_10Sec.Name = "tsm_refresh_10Sec";
+            this.tsm_refresh_10Sec.Size = new System.Drawing.Size(180, 24);
+            this.tsm_refresh_10Sec.Text = "10 Second";
+            this.tsm_refresh_10Sec.Click += new System.EventHandler(this.tsm_10Sec_Click);
+            // 
             // RssFeedReaderApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -234,7 +274,7 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsB_manageRssURL;
         private System.Windows.Forms.DataGridView gv_News;
-        private System.Windows.Forms.ToolStripSplitButton tsm_newPeriod;
+        private System.Windows.Forms.ToolStripSplitButton tsm_daysFrame;
         private System.Windows.Forms.ToolStripMenuItem tsm_1day;
         private System.Windows.Forms.ToolStripMenuItem tsm_2day;
         private System.Windows.Forms.ToolStripMenuItem tsm_3day;
@@ -242,6 +282,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDateTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColHeadLines;
         private System.Windows.Forms.DataGridViewLinkColumn ColLink;
+        private System.Windows.Forms.ToolStripDropDownButton tsm_refreshPeriod;
+        private System.Windows.Forms.ToolStripMenuItem tsm_refresh_1Hour;
+        private System.Windows.Forms.ToolStripMenuItem tsm_refresh_10min;
+        private System.Windows.Forms.ToolStripMenuItem tsm_refresh_10Sec;
     }
 }
 
