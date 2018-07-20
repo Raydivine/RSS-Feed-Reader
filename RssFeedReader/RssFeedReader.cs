@@ -8,7 +8,7 @@ namespace Library.RssFeedReader
 {
     /// <summary>
     /// Strucutre of News,
-    /// it contain 4 member which indicate 
+    /// it contain 4 member which indicate the news's elements
     /// </summary>
     public struct News
     {
@@ -88,9 +88,9 @@ namespace Library.RssFeedReader
 
     public static class RssFeedReader
     {
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
-                                   + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
-                                   + ";Integrated Security=True";
+        static string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
+                                        + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf;"
+                                        + "Integrated Security=True";
 
         /// <summary>
         /// Get the list of news from a RSS  Feed URL
@@ -99,36 +99,32 @@ namespace Library.RssFeedReader
         /// <returns>list of news</returns>
         public static List<News> getNewsFromRssURL(string rssUrl)
         {
-            string err = string.Empty;
+            DateTime date;
             List<News> newsList = new List<News>();
+            string url = string.Empty, title = string.Empty;
 
-            if (Uri.IsWellFormedUriString(rssUrl, UriKind.Absolute))
+            try
             {
-                try
-                {
+                if (Uri.IsWellFormedUriString(rssUrl, UriKind.Absolute))
                     using (XmlReader xmlReader = XmlReader.Create(rssUrl))
                     {
                         SyndicationFeed syncFeed = SyndicationFeed.Load(xmlReader);
 
                         foreach (SyndicationItem syncItem in syncFeed.Items)
                         {
-                            DateTime date = syncItem.PublishDate.DateTime;
-                            string url = syncItem.Id;
-                            string title = syncItem.Title.Text;
+                            url = syncItem.Id;
+                            title = syncItem.Title.Text;
+                            date = syncItem.PublishDate.DateTime;
 
-                            if (url == string.Empty || title == string.Empty)
-                                continue;
-
-                            newsList.Add(new News(date, url, title));
+                            if (url != string.Empty && title != string.Empty)
+                                newsList.Add(new News(date, url, title));
                         }
                     }
-                }
-                catch (Exception exc)
-                {
-                    err += "Error failed to retrieve news from RSS URL of '";
-                    err += rssUrl + "' , detail : " + exc.Message;
-                }
             }
+            catch (Exception exc)
+            {
+                string errMss = "Error failed to retrieve news from RSS URL of '" + rssUrl + "' , detail : " + exc.Message;
+            }         
             return newsList;
         }
 
@@ -138,37 +134,33 @@ namespace Library.RssFeedReader
         /// <param name="rssUrl"> the feed url</param>
         /// <param name="expireDate"> the expired date of new</param>
         /// <returns>list of news</returns>
-        public static List<News> getNewsFromRssURL(string rssUrl, DateTime expireDate)
-        {        
-            string err = string.Empty;
+        public static List<News> getFreshNewsFromUrl(string rssUrl, DateTime expireDate)
+        {
+            DateTime date;
             List<News> newsList = new List<News>();
+            string url = string.Empty, title = string.Empty;
 
-            if (Uri.IsWellFormedUriString(rssUrl, UriKind.Absolute))
+            try
             {
-                try
-                {
+                if (Uri.IsWellFormedUriString(rssUrl, UriKind.Absolute))
                     using (XmlReader xmlReader = XmlReader.Create(rssUrl))
                     {
                         SyndicationFeed syncFeed = SyndicationFeed.Load(xmlReader);
 
                         foreach (SyndicationItem syncItem in syncFeed.Items)
                         {
-                            DateTime date = syncItem.PublishDate.DateTime;
-                            string url = syncItem.Id;
-                            string title = syncItem.Title.Text;
+                            url = syncItem.Id;
+                            title = syncItem.Title.Text;
+                            date = syncItem.PublishDate.DateTime;
 
-                            if ( url == string.Empty || title == string.Empty || ( date != null && date < expireDate)     )
-                                continue;
-
-                            newsList.Add(new News(date, url, title));
+                            if (url != string.Empty && title != string.Empty && (date != null && date > expireDate) )
+                                newsList.Add(new News(date, url, title));
                         }
                     }
-                }
-                catch (Exception exc)
-                {
-                    err += "Error failed to retrieve news from RSS URL of '";
-                    err += rssUrl + "' , detail : " + exc.Message;
-                }
+            }
+            catch (Exception exc)
+            {
+                string errMss = "Cannot retrieve news from RSS URL of '" + rssUrl + "' , detail : " + exc.Message;
             }
             return newsList;
         }
@@ -176,37 +168,36 @@ namespace Library.RssFeedReader
         #region Methods of DataBase Manage
 
         /// <summary>
-        /// Get the list RSS URL From table
+        /// Get the list of RSS URL From Database
         /// </summary>
         /// <returns>list of Rss URL</returns>
-        public static List<string> getAllStoredUrl()
+        public static List<string> getUrlListFromDb()
         {
-            List<string> urls = new List<string>();
+            List<string> urlList = new List<string>();
             string query = "SELECT url FROM tRssURL";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         SqlDataReader reader = cmd.ExecuteReader();
 
                         while (reader.Read())
                         {
-                            urls.Add(reader["url"].ToString());
+                            urlList.Add(reader["url"].ToString());
                         }
                     }
                     connection.Close();
-                }
-                catch (Exception exc)
-                {
-                    string errMss = "Cannot connect to database , error : " + exc.Message;
-                }
+                }            
             }
-            return urls;
+            catch (Exception exc)
+            {
+                string errMss = "Cannot get list of url from database , error : " + exc.Message;
+            }         
+            return urlList;
         }
 
         /// <summary>
@@ -214,30 +205,13 @@ namespace Library.RssFeedReader
         /// </summary>
         /// <param name="addList"> the new added urls</param>
         /// <param name="removeList"> the urls going to remove</param>
-        public static void manageUrlInDb(List<string> addList, List<string> removeList)
+        public static void updateUrlInDb(List<string> addList, List<string> removeList)
         {
-            if (addList.Count + removeList.Count == 0)
-                return;
-
-            string query = buildTheQueryToManageUrl(addList, removeList);
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (addList.Count + removeList.Count >0)
             {
-                try
-                {
-                    connection.Open();
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    connection.Close();
-                }
-                catch (Exception exc)
-                {
-                    string errMss = "Cannot connect to database , error : " + exc.Message;
-                }
-            }
+                string query = buildTheQueryToManageUrl(addList, removeList);
+                executeSqlQuery(query);
+            }           
         }
 
         /// <summary>
@@ -267,29 +241,45 @@ namespace Library.RssFeedReader
                 addQuery += "INSERT INTO tRssURL (url) SELECT '" + url + "' ";
                 addQuery += "WHERE NOT EXISTS (SELECT url FROM tRssURL WHERE tRssURL.url = '" + url + "'); ";
             }
-
             return remvQuey + addQuery;
+        }
+
+        /// <summary>
+        /// Update the news in database, by deleting old news and inserting fresh news
+        /// </summary>
+        /// <param name="expireDate">if the new's publish date is older than this date, then is expire</param>
+        public static void UpdateNewsInDb(DateTime expireDate)
+        {
+            removeExpireNewsInDb(expireDate);
+            downloadFreshNewsToDb(expireDate);
+        }
+
+        /// <summary>
+        /// Remove the expire news in database, the expire news has older publishDate than expireDate
+        /// </summary>
+        /// <param name="expireDate">if the new's publish date is older than this date, then is expire</param>
+        private static void removeExpireNewsInDb(DateTime expireDate)
+        {
+            string query = "DELETE FROM tNews WHERE publishDate < '" + expireDate.ToString("yyyy-MM-dd HH:mm:ss") + "';";
+            executeSqlQuery(query);
         }
 
         /// <summary>
         /// Download non- expire News to Database
         /// </summary>
-        /// <param name="expireDate"> the expiredate of news </param>
-        public static void downloadNewsToDb(DateTime expireDate)
+        /// <param name="expireDate">if the new's publish date is older than this date, then is expire</param>
+        private static void downloadFreshNewsToDb(DateTime expireDate)
         {
-            List<string> urlList = getAllStoredUrl();
-            List<News> newsList = new List<News>();
-
+            List<News>  newsList = new List<News>();
+            List<string> urlList = getUrlListFromDb();
+            
             if (urlList.Count == 0) return;
 
-            foreach (string url in urlList)
+            urlList.ForEach(url => newsList.AddRange(getFreshNewsFromUrl(url, expireDate)) );
+            
+            try
             {
-                newsList.AddRange(getNewsFromRssURL(url, expireDate));
-            }
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
 
@@ -297,12 +287,12 @@ namespace Library.RssFeedReader
                         insertTheNewsIfIsNotInDb(connection, news);
 
                     connection.Close();
-                }
-                catch (Exception exc)
-                {
-                    string errMss = "Cannot connect to database , error : " + exc.Message;
-                }
+                }           
             }
+            catch (Exception exc)
+            {
+                string errMss = "Cannot download news to database , error : " + exc.Message;
+            }       
         }
 
         /// <summary>
@@ -314,10 +304,9 @@ namespace Library.RssFeedReader
         {
             string title = news.Title.Replace("\'", "");
             string sqlDateTime = news.PublishDate.ToString("yyyy-MM-dd HH:mm:ss");
-
-            string query = "INSERT INTO tNews (title,link,updateTime) SELECT ";
-            query += "'" + title + "','" + news.Link + "','" + sqlDateTime + "' ";
-            query += "WHERE NOT EXISTS (SELECT Link FROM tNews WHERE tNews.link = '" + news.Link + "'); ";
+            string query = "INSERT INTO tNews (title,link,publishDate) SELECT "
+                           + "'" + title + "','" + news.Link + "','" + sqlDateTime + "' "
+                           +"WHERE NOT EXISTS (SELECT Link FROM tNews WHERE tNews.link = '" + news.Link + "'); ";
 
             try
             {
@@ -328,94 +317,106 @@ namespace Library.RssFeedReader
             }
             catch (Exception exc)
             {
-                string errMss = "Cannot connect to database , error : " + exc.Message;
+                string errMss = "Cannot insert a news into , error : " + exc.Message;
             }
         }
 
         /// <summary>
-        /// Get List of News From Databse
+        ///  Execute a sql query
         /// </summary>
-        /// <returns> list of news</returns
-        public static List<News> getNewsFromDb()
+        /// <param name="query">a valid sql query</param>
+        private static void executeSqlQuery(string query)
         {
-            List<News> newsList = new List<News>();
-
-            string query = "SELECT title,link,updateTime FROM tNews";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        SqlDataReader reader = cmd.ExecuteReader();
-
-                        while (reader.Read())
-                        {
-                            string title = reader["title"].ToString();
-                            string link = reader["link"].ToString();
-                            DateTime dateTime = DateTime.Parse((reader["updateTime"].ToString()));
-
-                            newsList.Add(new News(dateTime, link, title));
-                        }
-                    }
-                    connection.Close();
-                }
-                catch (Exception exc)
-                {
-                    string errMss = "Cannot connect to database , error : " + exc.Message;
-                }
-            }
-
-            return newsList;
-        }
-
-        #endregion
-
-        #region Un-used Methods
-        private static string buildTheQueryToDownloadNews(List<News> newsList)
-        {
-            string query = string.Empty;
-
-            if (newsList.Count > 0)
-            {
-                foreach (News news in newsList)
-                {
-                    string title = news.Title.Replace("\'", "");
-                    string sqlDateTime = news.PublishDate.ToString("yyyy-MM-dd HH:mm:ss");
-
-                    query += "INSERT INTO tNews (title,link,updateTime) SELECT ";
-                    query += "'" + title + "','" + news.Link + "','" + sqlDateTime + "' ";
-                    query += "WHERE NOT EXISTS (SELECT Max(Len(Link)) FROM tNews WHERE tNews.link = '" + news.Link + "'); ";
-                }
-
-            }
-            return query;
-        }
-
-        public static void testInsert()
-        {
-            string query = "INSERT INTO tNews (title,link,updateTime) VALUES ('White House: Trump-Putin summit is on after hacking indictment','https://www.bbc.co.uk/news/world-us-canada-44830065','2018-07-14 02:27:55');";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.ExecuteNonQuery();
                     }
                     connection.Close();
                 }
-                catch (Exception exc)
-                {
-                    string errMss = "Cannot connect to database , error : " + exc.Message;
-                }
             }
+            catch (Exception exc)
+            {
+                string errMss = "Cannot execute a sql query , error : " + exc.Message;
+            }
+        }
+        #endregion
+
+        #region Un-used Methods
+        /// <summary>
+        /// Get List of News From Databse
+        /// </summary>
+        /// <returns> list of news</returns
+        public static List<News> getNewsFromDb()
+        {
+            DateTime dateTime;
+            List<News> newsList = new List<News>();
+            string title = string.Empty, link = string.Empty, query = "SELECT title,link,publishDate FROM tNews";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            link = reader["link"].ToString();
+                            title = reader["title"].ToString();
+                            dateTime = DateTime.Parse((reader["publishDate"].ToString()));
+
+                            newsList.Add(new News(dateTime, link, title));
+                        }
+                    }
+                    connection.Close();
+                }            
+            }
+            catch (Exception exc)
+            {
+                string errMss = "Cannot retrieve news from database , error : " + exc.Message;
+            }
+            return newsList;
+        }
+
+        /// <summary>
+        /// Build a query that download all the news to Database
+        /// </summary>
+        /// <param name="newsList"> list of news</param>
+        /// <returns></returns>
+        private static string buildTheQueryToDownloadNews(List<News> newsList)
+        {
+            string query = string.Empty, title = string.Empty, sqlDateTime = string.Empty;
+
+            if (newsList.Count > 0)
+            {
+                foreach (News news in newsList)
+                {
+                    title = news.Title.Replace("\'", "");
+                    sqlDateTime = news.PublishDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    query = "INSERT INTO tNews (title,link,publishDate) SELECT "
+                            + "'" + title + "','" + news.Link + "','" + sqlDateTime + "' "
+                            + "WHERE NOT EXISTS (SELECT Max(Len(Link)) FROM tNews WHERE tNews.link = '" + news.Link + "'); ";
+                }
+
+            }
+            return query;
+        }
+
+        /// <summary>
+        /// Dummy method to test inserting news into Database
+        /// </summary>
+        public static void testInsert()
+        {
+            string query = "INSERT INTO tNews (title,link,publishDate) VALUES ('White House: Trump-Putin summit is on after hacking indictment','https://www.bbc.co.uk/news/world-us-canada-44830065','2018-07-14 02:27:55');";
+            executeSqlQuery(query);
         }
         #endregion
 
