@@ -29,9 +29,12 @@ namespace RssFeedReaderApp
 
         enum TimeSpanInMillisec
         {
-            tenSec = 10000,
-            tenMin = 600000,
-            oneHour = 3600000
+            tenSec      =    10000,
+            tenMin      =   600000,
+            thirtyMin   =  1800000,
+            oneHour     =  3600000,
+            twoHour     =  7200000,
+            fourHour    = 14400000
         }
 
         /// <summary>
@@ -185,7 +188,7 @@ namespace RssFeedReaderApp
             tsm_1day.Checked = false;
             tsm_2day.Checked = false;
             tsm_3day.Checked = false;
-
+           
             switch (days)
             {
                 case 1  : tsm_1day.Checked = true; break;
@@ -195,18 +198,24 @@ namespace RssFeedReaderApp
             }
         }
 
-        private void updateRefreshPeriodBtnCheckedState(int milliSec)
+        private void updateRefreshPeriodBtnCheckedState(int refreshPeriodInMilliSec)
         {
             tsm_refresh_10Sec.Checked = false;
             tsm_refresh_10min.Checked = false;
+            tsm_refresh_30mins.Checked = false;
             tsm_refresh_1Hour.Checked = false;
+            tsm_refresh_2Hours.Checked = false;
+            tsm_refresh_4Hours.Checked = false;
 
-            switch (milliSec)
+            switch (refreshPeriodInMilliSec)
             {
-                case (int)TimeSpanInMillisec.tenSec : tsm_refresh_10Sec.Checked = true; break;
-                case (int)TimeSpanInMillisec.tenMin : tsm_refresh_10min.Checked = true; break;
-                case (int)TimeSpanInMillisec.oneHour: tsm_refresh_1Hour.Checked = true; break;
-                default                             : tsm_refresh_10Sec.Checked = true; break;
+                case (int)TimeSpanInMillisec.tenSec     : tsm_refresh_10Sec.Checked  = true; break;
+                case (int)TimeSpanInMillisec.tenMin     : tsm_refresh_10min.Checked  = true; break;
+                case (int)TimeSpanInMillisec.thirtyMin  : tsm_refresh_30mins.Checked = true; break;
+                case (int)TimeSpanInMillisec.oneHour    : tsm_refresh_1Hour.Checked  = true; break;
+                case (int)TimeSpanInMillisec.twoHour    : tsm_refresh_2Hours.Checked = true; break;
+                case (int)TimeSpanInMillisec.fourHour   : tsm_refresh_4Hours.Checked = true; break;
+                default                                 : tsm_refresh_10Sec.Checked  = true; break;
             }
         }
 
@@ -234,6 +243,7 @@ namespace RssFeedReaderApp
         private void tsB_manageRssURL_Click(object sender, EventArgs e)
         {
             ManageRssURL manageRssURLForm = new ManageRssURL();
+            manageRssURLForm.actionMainForm = exitThreadDelay;
             manageRssURLForm.Show();
         }
 
@@ -282,23 +292,37 @@ namespace RssFeedReaderApp
 
         private void tsm_1Hour_Click(object sender, EventArgs e)
         {
-            refreshPeriodInMilliSec = (int)TimeSpanInMillisec.oneHour;
-            updateRefreshPeriodBtnCheckedState(refreshPeriodInMilliSec);
-            setRefreshPeriodInAppConfig(refreshPeriodInMilliSec);
-            exitThreadDelay();
+            setRefreshPeriod(TimeSpanInMillisec.oneHour);
         }
 
         private void tsm_10min_Click(object sender, EventArgs e)
         {
-            refreshPeriodInMilliSec = (int)TimeSpanInMillisec.tenMin;
-            updateRefreshPeriodBtnCheckedState(refreshPeriodInMilliSec);
-            setRefreshPeriodInAppConfig(refreshPeriodInMilliSec);
-            exitThreadDelay();
+            setRefreshPeriod(TimeSpanInMillisec.tenMin);
         }
 
         private void tsm_10Sec_Click(object sender, EventArgs e)
         {
-            refreshPeriodInMilliSec = (int)TimeSpanInMillisec.tenSec;
+            setRefreshPeriod(TimeSpanInMillisec.tenSec);
+        }
+
+        private void tsm_refresh_4Hours_Click(object sender, EventArgs e)
+        {
+            setRefreshPeriod(TimeSpanInMillisec.fourHour);
+        }
+
+        private void tsm_refresh_2Hours_Click(object sender, EventArgs e)
+        {
+            setRefreshPeriod(TimeSpanInMillisec.twoHour);
+        }
+
+        private void tsm_refresh_30mins_Click(object sender, EventArgs e)
+        {
+            setRefreshPeriod(TimeSpanInMillisec.thirtyMin);
+        }
+
+        private void setRefreshPeriod(TimeSpanInMillisec timeSpanInMilli)
+        {
+            refreshPeriodInMilliSec = (int)timeSpanInMilli;
             updateRefreshPeriodBtnCheckedState(refreshPeriodInMilliSec);
             setRefreshPeriodInAppConfig(refreshPeriodInMilliSec);
             exitThreadDelay();

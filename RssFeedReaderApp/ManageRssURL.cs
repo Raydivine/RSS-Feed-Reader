@@ -20,6 +20,7 @@ namespace RssFeedReaderApp
         string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="
                                     + AppDomain.CurrentDomain.BaseDirectory + "rssFeedReader.mdf"
                                     + ";Integrated Security=True";
+        public Action actionMainForm { get; set; }
 
         /// <summary>
         /// 1. Get all the stored urls from database
@@ -100,6 +101,11 @@ namespace RssFeedReaderApp
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 RssFeedReader.updateUrlInDb(existed, removeList);
+
+                Action instance = actionMainForm;
+                if (instance != null)
+                    instance();
+
             }
        
         }
@@ -117,5 +123,6 @@ namespace RssFeedReaderApp
 
             MessageBox.Show(mss);
         }
+
     }
 }
