@@ -29,12 +29,12 @@ namespace RssFeedReaderApp
 
         enum TimeSpanInMillisec
         {
-            tenSec      =    10000,
-            tenMin      =   600000,
-            thirtyMin   =  1800000,
-            oneHour     =  3600000,
-            twoHour     =  7200000,
-            fourHour    = 14400000
+            tenSec = 10000,
+            tenMin = 600000,
+            thirtyMin = 1800000,
+            oneHour = 3600000,
+            twoHour = 7200000,
+            fourHour = 14400000
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace RssFeedReaderApp
         {
             t = new Thread(runFeedReader);
             t.IsBackground = true;
-            t.Start();       
+            t.Start();
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace RssFeedReaderApp
                 DataTable datatbale = new DataTable();
                 _sqlAdapter = new SqlDataAdapter(query, _connection);
                 _sqlAdapter.Fill(datatbale);
-                gv_News.Invoke((MethodInvoker) delegate { gv_News.DataSource = datatbale; });
+                gv_News.Invoke((MethodInvoker)delegate { gv_News.DataSource = datatbale; });
             }
             catch (Exception exc)
             {
@@ -188,13 +188,13 @@ namespace RssFeedReaderApp
             tsm_1day.Checked = false;
             tsm_2day.Checked = false;
             tsm_3day.Checked = false;
-           
+
             switch (days)
             {
-                case 1  : tsm_1day.Checked = true; break;
-                case 2  : tsm_2day.Checked = true; break;
-                case 3  : tsm_3day.Checked = true; break;
-                default : tsm_3day.Checked = true; break;
+                case 1: tsm_1day.Checked = true; break;
+                case 2: tsm_2day.Checked = true; break;
+                case 3: tsm_3day.Checked = true; break;
+                default: tsm_3day.Checked = true; break;
             }
         }
 
@@ -209,13 +209,13 @@ namespace RssFeedReaderApp
 
             switch (refreshPeriodInMilliSec)
             {
-                case (int)TimeSpanInMillisec.tenSec     : tsm_refresh_10Sec.Checked  = true; break;
-                case (int)TimeSpanInMillisec.tenMin     : tsm_refresh_10min.Checked  = true; break;
-                case (int)TimeSpanInMillisec.thirtyMin  : tsm_refresh_30mins.Checked = true; break;
-                case (int)TimeSpanInMillisec.oneHour    : tsm_refresh_1Hour.Checked  = true; break;
-                case (int)TimeSpanInMillisec.twoHour    : tsm_refresh_2Hours.Checked = true; break;
-                case (int)TimeSpanInMillisec.fourHour   : tsm_refresh_4Hours.Checked = true; break;
-                default                                 : tsm_refresh_10Sec.Checked  = true; break;
+                case (int)TimeSpanInMillisec.tenSec: tsm_refresh_10Sec.Checked = true; break;
+                case (int)TimeSpanInMillisec.tenMin: tsm_refresh_10min.Checked = true; break;
+                case (int)TimeSpanInMillisec.thirtyMin: tsm_refresh_30mins.Checked = true; break;
+                case (int)TimeSpanInMillisec.oneHour: tsm_refresh_1Hour.Checked = true; break;
+                case (int)TimeSpanInMillisec.twoHour: tsm_refresh_2Hours.Checked = true; break;
+                case (int)TimeSpanInMillisec.fourHour: tsm_refresh_4Hours.Checked = true; break;
+                default: tsm_refresh_10Sec.Checked = true; break;
             }
         }
 
