@@ -26,7 +26,8 @@ This is a portable exe application, it store the news offline and automatic dele
 2. Extract the zip file, and open the exe application
 
 3. This is the main form which has register RSS Url, the News will be automatic download after you register.
-   You can choose 1 - 3 days for your news time frame. Example for 1 day, this reader will only keep today and yesterday's news.
+   You can choose 1 - 3 days for your news time frame, example for 1 day, this reader will only keep today and yesterday's news.
+   You can choose your news refresh period also, example for 10 seconds, this reader will update your news every 10 seconds.
 
    <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/v%201.1/Images/MainScreen.PNG" height="100%" width="100%">
    
@@ -35,7 +36,7 @@ This is a portable exe application, it store the news offline and automatic dele
 
    <img src="https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/v%201.1/Images/MangeUrl.PNG" height="85%" width="85%">  
 
-5. This is the [demo video](https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/v%201.0/Demo%20Video.mkv), you can download and watch it.
+5. This is the [demo video](https://github.com/Raydivine/RSS-Feed-Reader/blob/master/Documentation/v%201.1/v1.1%20Demo.mkv), you can download and watch it.
 
 <h2>Regards</h2>
 This project is welcome anyone to <b>copy, modify and republish</b>, enjoys. 
